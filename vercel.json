@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "portfolio",
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ],
+  "env": {
+    "GITHUB_TOKEN": "@github-token",
+    "GITHUB_OWNER": "@github-owner",
+    "GITHUB_REPO": "@github-repo"
+  }
+}

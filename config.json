@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "hero": {
+    "status": "Open to Opportunities",
+    "line1": "Hi, I'm",
+    "line2": "Md Palash",
+    "line3": "Mia",
+    "description": "A motivated Textile Engineer from BUTEX, specializing in Yarn Engineering with hands-on experience in Central Costing, inter-department coordination between Supply Chain, CAD, and IE. Passionate about efficient production planning, cost control, and global buyer relations.",
+    "image": "assets/profile.png"
+  },
+  "profileCard": {
+    "name": "Md Palash Mia",
+    "location": "Bangladesh",
+    "badges": [
+      "BUTEX'24",
+      "Yarn Engineering",
+      "Costing Pro"
+    ],
+    "stats": [
+      {
+        "label": "CGPA",
+        "value": "3.42"
+      },
+      {
+        "label": "Cost Sheets/Mo",
+        "value": "135+"
+      },
+      {
+        "label": "Intl. Buyers",
+        "value": "5"
+      }
+    ],
+    "tag": "Open to Relocate"
+  },
+  "about": {
+    "paragraphs": [
+      "I am a recent Textile Engineering graduate from Bangladesh University of Textiles (BUTEX) with a specialization in Yarn Engineering and a CGPA of 3.42. My academic journey has equipped me with a strong foundation in textile manufacturing, yarn production processes, and quality assurance.",
+      "Professionally, I have gained practical experience as an Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, where I handle costing inquiries for international buyers including Decathlon, Haddad, Jack & Jones, and Malacca. I consistently prepare 120-150 cost sheets per month, driving significant efficiency improvements in the costing process.",
+      "I am passionate about building a career in textile merchandising, where I can leverage my technical knowledge and practical experience to support efficient production planning, cost control, and global buyer relations in a growth-oriented apparel organization."
+    ]
+  },
+  "contact": {
+    "email": "palashmd985bd@gmail.com",
+    "phone": "+880 1516058708",
+    "linkedin": "linkedin.com/in/palash1423",
+    "availability": "Open to opportunities in garment and textile manufacturing, quality assurance, and production engineering."
+  },
+  "sections": {
+    "home": true,
+    "about": true,
+    "experience": true,
+    "projects": true,
+    "skills": true,
+    "education": true,
+    "certificates": true,
+    "experts": true,
+    "resume": true,
+    "contact": true
+  }
+}

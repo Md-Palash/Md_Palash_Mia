@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Md Palash Mia | Textile Engineer</title>
+  <meta name="description" content="Md Palash Mia — Textile Engineer specializing in Yarn Engineering. Portfolio featuring education, skills, internship experience, and academic projects." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* ----- DESIGN TOKENS ----- */
+    :root {
+      --bg: #F3F1FA;
+      --card: #FFFFFF;
+      --ink: #171325;
+      --ink-soft: #3D3A4A;
+      --ink-muted: #5A5768;
+      --border: rgba(23,19,37,0.07);
+      --sidebar-bg: #14121C;
+      --sidebar-text: #A6A2B8;
+      --sidebar-active-bg: #FFFFFF;
+      --sidebar-active-text: #14121C;
+      --primary: #2D3B66;
+      --primary-light: #4A5B8C;
+      --primary-tile: #E8EDF5;
+      --mint: #22B08D;
+      --mint-tile: #E2F6EF;
+      --coral: #E86850;
+      --coral-tile: #FFEBE3;
+      --gold: #D4A02B;
+      --gold-tile: #FEF3C7;
+      --rose: #D4536A;
+      --rose-tile: #FFE4E6;
+      --sky: #3B82F6;
+      --sky-tile: #DBEAFE;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Libre Caslon Text', 'Georgia', serif;
+      --font-mono: 'Manrope', monospace;
+      --r-lg: 28px;
+      --r-md: 18px;
+      --r-sm: 10px;
+      --shadow-card: 0 2px 8px rgba(23,19,37,0.04), 0 16px 40px rgba(23,19,37,0.06);
+      --shadow-card-hover: 0 8px 20px rgba(23,19,37,0.06), 0 26px 60px rgba(23,19,37,0.1);
+      --gutter: clamp(1.1rem, 3vw, 2rem);
+      --ease: cubic-bezier(.22,.61,.36,1);
+      --ease-soft: cubic-bezier(.16,.84,.44,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .app-shell { display: flex; min-height: 100vh; position: relative; }
+    .ambient-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+    .blob-1 { width: 520px; height: 520px; top: -140px; left: 18%; background: radial-gradient(circle, var(--primary-light), transparent 70%); }
+    .blob-2 { width: 460px; height: 460px; bottom: -120px; right: 6%; background: radial-gradient(circle, var(--mint), transparent 70%); }
+    .blob-3 { width: 380px; height: 380px; top: 38%; right: 28%; background: radial-gradient(circle, var(--coral), transparent 70%); opacity: 0.30; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.6rem 1.3rem;
+      z-index: 50;
+    }
+    .sidebar-top { padding: 0.4rem 0.5rem 1.6rem; }
+    .logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+      color: #fff;
+    }
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+    }
+    .logo-mark img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .sidebar-nav { position: relative; flex: 1; }
+    .nav-indicator {
+      position: absolute; left: 0; right: 0; top: 0;
+      height: 44px; background: var(--sidebar-active-bg);
+      border-radius: var(--r-sm); transition: transform .38s var(--ease-soft);
+      z-index: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
+    .sidebar-nav ul { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.15rem; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 0.85rem;
+      height: 44px; padding-inline: 0.9rem;
+      border-radius: var(--r-sm);
+      font-size: 0.92rem; font-weight: 500;
+      color: var(--sidebar-text);
+      transition: color .25s var(--ease);
+      position: relative;
+      font-family: var(--font-mono);
+    }
+    .sidebar-nav a:hover { color: #fff; }
+    .sidebar-nav a.active { color: var(--sidebar-active-text); font-weight: 600; }
+    .sidebar-nav a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: rgba(255,255,255,0.1);
+      color: var(--sidebar-text);
+      padding: 0.15rem 0.45rem;
+      border-radius: 999px;
+    }
+    .sidebar-nav a.active .nav-badge { background: var(--primary-tile); color: var(--primary); }
+    .sidebar-promo {
+      margin-top: 1.4rem;
+      background: linear-gradient(160deg, var(--primary), #1E2D4A);
+      border-radius: var(--r-md);
+      padding: 1.3rem;
+      color: #fff;
+    }
+    .sidebar-promo .promo-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; margin-bottom: 0.8rem; }
+    .sidebar-promo .promo-icon svg { width: 19px; height: 19px; stroke: #fff; }
+    .sidebar-promo h4 { font-size: 0.95rem; font-weight: 600; font-family: var(--font-body); }
+    .sidebar-promo p { font-size: 0.8rem; color: rgba(255,255,255,0.75); margin-top: 0.35rem; line-height: 1.5; }
+    .sidebar-promo .btn { margin-top: 0.9rem; width: 100%; }
+    .sidebar-toggle {
+      display: none;
+      position: fixed; top: 1rem; left: 1rem; z-index: 60;
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--sidebar-bg);
+      align-items: center; justify-content: center;
+      box-shadow: var(--shadow-card);
+    }
+    .sidebar-toggle span, .sidebar-toggle span::before, .sidebar-toggle span::after {
+      content: ''; display: block; width: 18px; height: 1.6px; background: #fff; position: relative;
+      transition: transform .2s var(--ease), opacity .2s var(--ease);
+    }
+    .sidebar-toggle span::before { position: absolute; top: -6px; }
+    .sidebar-toggle span::after { position: absolute; top: 6px; }
+    .sidebar-toggle.open span { background: transparent; }
+    .sidebar-toggle.open span::before { transform: rotate(45deg) translate(4px,4px); background: #fff; }
+    .sidebar-toggle.open span::after { transform: rotate(-45deg) translate(4px,-4px); background: #fff; }
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; background: rgba(10,8,18,0.5);
+      z-index: 45; opacity: 0; pointer-events: none;
+      transition: opacity .3s var(--ease);
+    }
+    .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
+    @media (max-width:960px) {
+      .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform .35s var(--ease-soft); box-shadow: var(--shadow-card-hover); }
+      .sidebar.open { transform: none; }
+      .sidebar-toggle { display: flex; }
+      .sidebar-overlay { display: block; }
+    }
+
+    /* CONTENT */
+    .content {
+      flex: 1; position: relative; z-index: 1;
+      padding: clamp(1.4rem,4vw,2.6rem) clamp(1.2rem,4vw,3rem) 3rem;
+      display: flex; flex-direction: column; gap: clamp(1.2rem,3vw,1.6rem);
+      max-width: 1180px;
+    }
+    .panel {
+      background: var(--card);
+      border-radius: var(--r-lg);
+      padding: clamp(1.8rem,4vw,2.8rem);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .panel-head h2 { font-size: clamp(2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+    .panel-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 0.4rem;
+    }
+    .panel-eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+    .panel-sub { color: var(--ink-soft); font-size: 1rem; max-width: 52ch; font-weight: 500; }
+    .btn {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      font-weight: 600; font-size: 0.9rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(.22,1,.36,1), box-shadow 0.25s cubic-bezier(.22,1,.36,1);
+      will-change: transform;
+      font-family: var(--font-mono);
+    }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 32px rgba(23,19,37,0.25); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px) scale(1.02); }
+    .btn-sm { padding: 0.55rem 1.15rem; font-size: 0.8rem; }
+    .btn-light { background: #fff; color: var(--primary); font-weight: 700; }
+    .btn-light:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
+
+    .scroll-progress-track { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200; background: transparent; }
+    .scroll-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--mint)); }
+    .back-to-top {
+      position: fixed; right: clamp(1rem,3vw,2rem); bottom: clamp(1rem,3vw,2rem);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 150; opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none;
+      transition: opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .back-to-top.visible { opacity: 1; transform: none; pointer-events: auto; }
+    .back-to-top svg { width: 18px; height: 18px; stroke: #fff; }
+
+    /* HERO */
+    .hero-panel { padding: clamp(1.8rem,4vw,2.6rem); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 600; padding: 0.5rem 0.95rem;
+      border-radius: 999px; font-family: var(--font-mono);
+    }
+    .status-pill.mint { background: var(--mint-tile); color: var(--mint); }
+    .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    .hero-split { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(2rem,5vw,3.2rem); align-items: center; margin-top: 1.6rem; }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 6vw, 4.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 1.3rem;
+    }
+    .hero-headline .line { display: block; overflow: hidden; }
+    .hero-headline .line span { display: inline-block; }
+    .hero-intro { margin-top: 1.3rem; color: var(--ink-soft); max-width: 48ch; font-size: 1rem; font-weight: 400; line-height: 1.8; }
+    .hero-cta { margin-top: 1.8rem; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .hero-cards-row { display: grid; grid-template-columns: 1fr 1.1fr; gap: 1rem; }
+    .profile-mini-card {
+      background: var(--primary-tile);
+      border-radius: var(--r-md);
+      padding: 1.1rem 1.3rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+    .profile-mini-card h3 { font-size: 1.25rem; font-weight: 700; font-family: var(--font-display); }
+    .profile-mini-card .muted { font-size: 0.82rem; color: var(--ink-muted); font-weight: 500; }
+    .profile-mini-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem; width: fit-content;
+      background: #fff; padding: 0.4rem 0.7rem; border-radius: 999px;
+      font-size: 0.76rem; font-weight: 600; color: var(--primary);
+    }
+    .profile-mini-tag svg { width: 13px; height: 13px; stroke: var(--primary); }
+    .profile-mini-card .highlight-row {
+      display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.15rem;
+    }
+    .highlight-badge {
+      background: rgba(255,255,255,0.7);
+      padding: 0.2rem 0.8rem; border-radius: 999px;
+      font-size: 0.7rem; font-weight: 600; color: var(--primary);
+    }
+    .profile-mini-card .stat-row {
+      display: flex; gap: 1rem; margin-top: 0.3rem; flex-wrap: wrap;
+    }
+    .stat-item {
+      font-size: 0.8rem; color: var(--ink-muted);
+    }
+    .stat-item strong {
+      color: var(--ink);
+      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      display: block;
+    }
+    .profile-photo-card {
+      background: linear-gradient(160deg, var(--mint-tile), #fff);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 160px;
+    }
+    .connect-card {
+      margin-top: 1rem;
+      background: linear-gradient(135deg, var(--mint-tile) 0%, var(--coral-tile) 100%);
+      border-radius: var(--r-md);
+      padding: 1.2rem 1.4rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      color: var(--ink);
+    }
+    .connect-card p { font-weight: 600; font-size: 0.95rem; font-family: var(--font-body); }
+    .connect-icons { display: flex; gap: 0.6rem; }
+    .connect-icon {
+      width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s cubic-bezier(.22,1,.36,1), background 0.3s cubic-bezier(.22,1,.36,1);
+    }
+    .connect-icon:hover { background: #fff; transform: translateY(-3px) scale(1.05); }
+    .connect-icon svg { width: 16px; height: 16px; stroke: var(--ink-muted); }
+    @media (max-width:900px) {
+      .hero-split { grid-template-columns: 1fr; }
+      .hero-cards-row { grid-template-columns: 1fr; }
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.9rem; }
+    .stats-grid-4 { grid-template-columns: repeat(4,1fr); }
+    @media (max-width:860px) { .stats-grid-4 { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width:520px) { .stats-grid { grid-template-columns: 1fr; } }
+    .tile {
+      border-radius: var(--r-md);
+      padding: 1.3rem 1.4rem;
+      background: var(--primary-tile);
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .tile.mint { background: var(--mint-tile); }
+    .tile.coral { background: var(--coral-tile); }
+    .tile-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.2rem;
+      flex-shrink: 0;
+    }
+    .tile-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.8; }
+    .tile-label { font-size: 0.75rem; color: var(--ink-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; }
+    .tile-value { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+    .tile-value small { font-size: 0.8rem; font-weight: 400; color: var(--ink-muted); }
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.6rem,4vw,2.6rem); }
+    .about-text p { color: var(--ink-soft); font-weight: 400; line-height: 1.8; }
+    .about-text p + p { margin-top: 1rem; }
+    .values-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.9rem; }
+    .value-tile { 
+      border-radius: var(--r-md); 
+      padding: 1.2rem 1rem; 
+      background: var(--primary-tile); 
+      text-align: center;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1);
+    }
+    .value-tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .value-tile.mint { background: var(--mint-tile); }
+    .value-tile.coral { background: var(--coral-tile); }
+    .value-tile.gold { background: var(--gold-tile); }
+    .value-tile.rose { background: var(--rose-tile); }
+    .value-tile.sky { background: var(--sky-tile); }
+    .value-tile .tile-icon { 
+      width: 44px; height: 44px; border-radius: 50%; 
+      background: rgba(255,255,255,0.7); 
+      display: flex; align-items: center; justify-content: center; 
+      margin: 0 auto 0.4rem; 
+    }
+    .value-tile .tile-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.8; }
+    .value-tile.mint .tile-icon svg { stroke: var(--mint); }
+    .value-tile.coral .tile-icon svg { stroke: var(--coral); }
+    .value-tile.gold .tile-icon svg { stroke: var(--gold); }
+    .value-tile.rose .tile-icon svg { stroke: var(--rose); }
+    .value-tile.sky .tile-icon svg { stroke: var(--sky); }
+    .value-tile .value-stat { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+    .value-tile .value-label { font-size: 0.75rem; color: var(--ink-muted); font-weight: 500; }
+    .value-tile .value-sub { font-size: 0.65rem; color: var(--ink-muted); font-weight: 400; }
+    @media (max-width:860px) { 
+      .about-grid { grid-template-columns: 1fr; } 
+      .values-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width:500px) { .values-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* Education */
+    .edu-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .edu-tile {
+      display: flex; gap: 1.1rem;
+      background: var(--primary-tile);
+      border-radius: var(--r-md);
+      padding: 1.3rem 1.5rem;
+      align-items: flex-start;
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1);
+    }
+    .edu-tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .edu-tile.mint { background: var(--mint-tile); }
+    .edu-tile.coral { background: var(--coral-tile); }
+    .edu-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .edu-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
+    .edu-year { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .edu-tile h3 { font-size: 1.15rem; font-weight: 700; margin-top: 0.15rem; color: var(--ink); }
+    .edu-dept { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.15rem; font-weight: 500; }
+    .edu-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.7rem; font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-muted); }
+
+    /* Skills */
+    .skills-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.6rem; }
+    .skill-block h3 { font-family: var(--font-mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-bottom: 1.1rem; }
+    .skill-row { margin-bottom: 1rem; }
+    .skill-row:last-child { margin-bottom: 0; }
+    .skill-row-label { display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 0.4rem; font-weight: 500; }
+    .skill-row-label span:last-child { font-family: var(--font-mono); color: var(--ink-muted); font-size: 0.78rem; }
+    .skill-bar-track { height: 7px; background: var(--bg); border-radius: 999px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; width: 0%; border-radius: 999px; }
+    .skill-row[data-color="primary"] .skill-bar-fill { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
+    .skill-row[data-color="mint"] .skill-bar-fill { background: linear-gradient(90deg, var(--mint), #6EE7B7); }
+    .skill-row[data-color="coral"] .skill-bar-fill { background: linear-gradient(90deg, var(--coral), #FB923C); }
+    .skill-row[data-color="gold"] .skill-bar-fill { background: linear-gradient(90deg, var(--gold), #FCD34D); }
+    .skill-row[data-color="rose"] .skill-bar-fill { background: linear-gradient(90deg, var(--rose), #FB7185); }
+    .skill-row[data-color="sky"] .skill-bar-fill { background: linear-gradient(90deg, var(--sky), #60A5FA); }
+    @media (max-width:860px) { .skills-cols { grid-template-columns: 1fr; } }
+
+    /* Experience */
+    .internship-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem; }
+    .internship-side { background: var(--primary-tile); border-radius: var(--r-md); padding: 1.4rem; height: fit-content; transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1); }
+    .internship-side:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .internship-side h3 { font-size: 1.15rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); }
+    .internship-side .company { color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-top: 0.4rem; }
+    .internship-side .duration { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.78rem; margin-top: 0.7rem; }
+    
+    .internship-block h4 { 
+      font-family: var(--font-display); 
+      font-size: 1.05rem; 
+      font-weight: 700; 
+      letter-spacing: 0.01em;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem; 
+    }
+    .internship-block p, .internship-block li { color: var(--ink-soft); font-size: 0.92rem; font-weight: 400; line-height: 1.8; }
+    .internship-block ul { display: flex; flex-direction: column; gap: 0.45rem; }
+    .internship-block li::before { content: '— '; color: var(--primary); }
+    .tech-chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.3rem; }
+    .tech-chip { font-family: var(--font-mono); font-size: 0.72rem; background: var(--primary-tile); color: var(--primary); padding: 0.32rem 0.75rem; border-radius: 999px; font-weight: 600; }
+    .tech-chip.alt { background: var(--gold-tile); color: var(--gold); }
+    .tech-chip.alt2 { background: var(--rose-tile); color: var(--rose); }
+    @media (max-width:780px) { .internship-layout { grid-template-columns: 1fr; } }
+
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+    .project-tile { background: var(--bg); border-radius: var(--r-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1); }
+    .project-tile:hover { transform: translateY(-8px) scale(1.01); box-shadow: var(--shadow-card-hover); }
+    .project-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .project-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
+    .project-tile h3 { font-size: 1.1rem; font-weight: 700; margin-top: 0.4rem; color: var(--ink); }
+    .project-tile p { color: var(--ink-soft); font-size: 0.88rem; font-weight: 400; line-height: 1.7; }
+    .project-tile .label { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 700; }
+    .project-links { margin-top: auto; display: flex; gap: 0.5rem; padding-top: 0.6rem; }
+    @media (max-width:960px) { .projects-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width:640px) { .projects-grid { grid-template-columns: 1fr; } }
+
+    /* Certificates */
+    .cert-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.4rem; }
+    .cert-tile { background: var(--bg); border-radius: var(--r-md); padding: 1.4rem; transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1); }
+    .cert-tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: var(--shadow-card-hover); }
+    .cert-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; margin-bottom: 0.9rem; }
+    .cert-tile-icon svg { width: 19px; height: 19px; stroke: var(--mint); }
+    .cert-tile h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+    .cert-org { color: var(--primary); font-size: 0.85rem; margin-top: 0.25rem; font-weight: 500; }
+    .cert-date { color: var(--ink-muted); font-family: var(--font-mono); font-size: 0.75rem; margin-top: 0.25rem; }
+    .cert-actions { display: flex; gap: 0.55rem; margin-top: 1rem; }
+    @media (max-width:960px) { .cert-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width:640px) { .cert-grid { grid-template-columns: 1fr; } }
+
+    /* Experts Opinion */
+    .experts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    .expert-card {
+      background: var(--bg);
+      border-radius: var(--r-md);
+      padding: 1.6rem 1.4rem;
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s cubic-bezier(.22,1,.36,1);
+    }
+    .expert-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card-hover); }
+    .expert-card .expert-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 0.8rem;
+      border: 3px solid var(--primary-tile);
+      background: var(--primary-tile);
+    }
+    .expert-card .expert-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .expert-card .expert-title {
+      font-size: 0.78rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .expert-card .expert-quote {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    @media (max-width:860px) { .experts-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width:520px) { .experts-grid { grid-template-columns: 1fr; } }
+
+    /* Resume */
+    .resume-layout { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .resume-preview-tile { width: 120px; aspect-ratio: 3/4; background: var(--primary-tile); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.4s cubic-bezier(.22,1,.36,1); }
+    .resume-preview-tile:hover { transform: scale(1.02) rotate(-1deg); }
+    .resume-preview-tile svg { width: 36px; height: 36px; stroke: var(--primary); }
+    .resume-text h3 { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+    .resume-text p { color: var(--ink-soft); margin-top: 0.5rem; max-width: 46ch; font-weight: 400; line-height: 1.8; }
+    .resume-cta { margin-top: 1.1rem; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(1.6rem,4vw,2.6rem); }
+    .contact-tiles { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-tile { display: flex; align-items: center; gap: 1rem; background: var(--bg); border-radius: var(--r-md); padding: 1.1rem 1.3rem; transition: transform 0.3s cubic-bezier(.22,1,.36,1), background 0.3s cubic-bezier(.22,1,.36,1); }
+    .contact-tile:hover { transform: translateX(4px) scale(1.01); background: var(--primary-tile); }
+    .contact-tile .icon-wrap { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-tile .icon-wrap svg { width: 18px; height: 18px; stroke: var(--primary); }
+    .contact-tile h4 { font-size: 0.8rem; color: var(--ink-muted); font-weight: 500; }
+    .contact-tile p { font-size: 0.94rem; font-weight: 600; margin-top: 0.1rem; font-family: var(--font-mono); color: var(--ink); }
+    .contact-form { background: var(--bg); border-radius: var(--r-md); padding: clamp(1.5rem,4vw,2rem); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); }
+    .form-group input, .form-group textarea { padding: 0.8rem 0.95rem; border: 1px solid var(--border); border-radius: var(--r-sm); background: #fff; font-weight: 500; width: 100%; font-family: var(--font-body); }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tile); }
+    .form-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.9rem; }
+    @media (max-width:860px) { .contact-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
+
+    .footer { text-align: center; padding: 1.6rem 0 0.6rem; color: var(--ink-muted); font-size: 0.83rem; font-weight: 500; }
+    .footer a:hover { color: var(--primary); }
+
+    @media (max-width:640px) { .panel { border-radius: 22px; } }
+    @media (max-width:480px) {
+      .hero-headline { font-size: 2.2rem; }
+    }
+  </style>
+<style>
+    /* ===== ADMIN OVERLAY SYSTEM ===== */
+    .admin-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--bg); display: none;
+      overflow-y: auto;
+    }
+    .admin-overlay.active { display: block; }
+    .admin-gate {
+      position: fixed; inset: 0; z-index: 1001;
+      background: var(--sidebar-bg);
+      display: none; align-items: center; justify-content: center;
+    }
+    .admin-gate.active { display: flex; }
+    .admin-gate-panel {
+      background: var(--card); border-radius: var(--r-lg);
+      padding: 2.5rem; width: 100%; max-width: 380px;
+      box-shadow: var(--shadow-card-hover); text-align: center;
+    }
+    .admin-gate-panel h2 {
+      font-family: var(--font-display); font-size: 1.6rem;
+      font-weight: 700; color: var(--ink); margin-bottom: 0.4rem;
+    }
+    .admin-gate-panel p {
+      font-family: var(--font-body); font-size: 0.9rem;
+      color: var(--ink-muted); margin-bottom: 1.6rem;
+    }
+    .admin-gate-panel .lock-icon {
+      width: 48px; height: 48px; margin: 0 auto 1.2rem;
+      color: var(--primary);
+    }
+    .admin-gate-panel input[type="password"] {
+      width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: var(--bg);
+      font-family: var(--font-mono); font-size: 0.95rem;
+      color: var(--ink); margin-bottom: 1rem;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .admin-gate-panel input[type="password"]:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-tile);
+    }
+    .admin-gate-panel .error {
+      color: var(--coral); font-family: var(--font-mono);
+      font-size: 0.78rem; margin-top: -0.5rem; margin-bottom: 0.8rem;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .admin-gate-panel .error.show { opacity: 1; }
+
+    .admin-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: var(--sidebar-bg); color: #fff;
+      padding: 0.7rem 1.5rem; display: none;
+      align-items: center; justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .admin-bar.active { display: flex; }
+    .admin-bar-left {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-family: var(--font-mono); font-size: 0.82rem;
+    }
+    .admin-bar-left .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--mint); animation: pulse 2s ease-in-out infinite;
+    }
+    .admin-bar-right { display: flex; align-items: center; gap: 0.6rem; }
+    .admin-bar .btn-sm {
+      padding: 0.4rem 1rem; font-size: 0.75rem;
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .admin-bar .btn-sm:hover {
+      background: rgba(255,255,255,0.2); transform: translateY(-2px);
+    }
+
+    .admin-editor {
+      position: fixed; top: 48px; right: 0; bottom: 0; width: 420px;
+      max-width: 90vw; background: var(--card); z-index: 998;
+      box-shadow: -8px 0 40px rgba(23,19,37,0.12);
+      transform: translateX(100%); transition: transform 0.4s var(--ease-soft);
+      overflow-y: auto; border-left: 1px solid var(--border);
+    }
+    .admin-editor.active { transform: translateX(0); }
+    .admin-editor-header {
+      position: sticky; top: 0; background: var(--card);
+      padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 2;
+    }
+    .admin-editor-header h3 {
+      font-family: var(--font-display); font-size: 1.1rem;
+      font-weight: 700; color: var(--ink);
+    }
+    .admin-editor-body { padding: 1.2rem 1.5rem 2rem; }
+    .admin-editor .tabs {
+      display: flex; gap: 0.3rem; margin-bottom: 1.2rem;
+      position: sticky; top: 60px; background: var(--card);
+      padding: 0.4rem 0; z-index: 1;
+    }
+    .admin-editor .tab {
+      padding: 0.45rem 0.9rem; border-radius: var(--r-sm);
+      font-family: var(--font-mono); font-size: 0.78rem;
+      font-weight: 600; color: var(--ink-muted); background: var(--bg);
+      border: 1px solid var(--border); cursor: pointer;
+      transition: all 0.2s var(--ease);
+    }
+    .admin-editor .tab:hover { color: var(--ink); background: var(--primary-tile); }
+    .admin-editor .tab.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .admin-editor .sub-panel { display: none; }
+    .admin-editor .sub-panel.active { display: block; }
+    .admin-editor .form-group { margin-bottom: 1.2rem; }
+    .admin-editor .form-group label {
+      display: block; font-family: var(--font-mono); font-size: 0.72rem;
+      font-weight: 600; color: var(--ink-soft); margin-bottom: 0.4rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .admin-editor .form-group input,
+    .admin-editor .form-group textarea {
+      width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border);
+      border-radius: var(--r-sm); background: var(--bg);
+      font-family: var(--font-body); font-size: 0.9rem; color: var(--ink);
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .admin-editor .form-group input:focus,
+    .admin-editor .form-group textarea:focus {
+      outline: none; border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-tile);
+    }
+    .admin-editor .form-group textarea { resize: vertical; min-height: 60px; }
+    .admin-editor .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+    }
+    .admin-editor .section-card {
+      background: var(--bg); border-radius: var(--r-md);
+      padding: 1rem; margin-bottom: 0.8rem; border: 1px solid var(--border);
+    }
+    .admin-editor .section-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.8rem;
+    }
+    .admin-editor .section-card-header h4 {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--ink);
+    }
+    .admin-editor .color-swatch {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 0.7rem; border-radius: var(--r-sm);
+      background: var(--bg); border: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted);
+      cursor: pointer; transition: all 0.2s var(--ease);
+    }
+    .admin-editor .color-swatch:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .admin-editor .color-swatch.selected { border-color: var(--primary); background: var(--primary-tile); color: var(--primary); }
+    .admin-editor .color-swatch .swatch-dot {
+      width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
+    }
+    .admin-editor .range-value {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--primary); font-weight: 600; margin-top: 0.2rem;
+    }
+    .admin-editor input[type="range"] {
+      width: 100%; height: 5px; -webkit-appearance: none; appearance: none;
+      background: var(--bg); border-radius: 999px; outline: none; cursor: pointer;
+    }
+    .admin-editor input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 18px; height: 18px;
+      border-radius: 50%; background: var(--primary); cursor: pointer;
+      box-shadow: 0 2px 6px rgba(45,59,102,0.3);
+    }
+    .admin-editor .drag-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .admin-editor .drag-item {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.7rem 0.9rem; background: var(--bg);
+      border-radius: var(--r-sm); border: 1px solid var(--border);
+      cursor: grab; transition: all 0.2s var(--ease);
+    }
+    .admin-editor .drag-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+    .admin-editor .drag-item.dragging { opacity: 0.5; }
+    .admin-editor .drag-item .drag-handle { width: 16px; height: 16px; color: var(--ink-muted); flex-shrink: 0; }
+    .admin-editor .drag-item .drag-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; }
+    .admin-editor .drag-item .drag-toggle { margin-left: auto; }
+    .admin-editor .toggle-switch {
+      position: relative; width: 44px; height: 24px; background: var(--border);
+      border-radius: 999px; cursor: pointer; transition: background 0.25s var(--ease);
+    }
+    .admin-editor .toggle-switch.active { background: var(--mint); }
+    .admin-editor .toggle-switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 20px; height: 20px; border-radius: 50%; background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15); transition: transform 0.25s var(--ease);
+    }
+    .admin-editor .toggle-switch.active::after { transform: translateX(20px); }
+
+    .admin-toast {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1002;
+      background: var(--ink); color: #fff; padding: 0.8rem 1.2rem;
+      border-radius: var(--r-md); font-family: var(--font-mono); font-size: 0.82rem;
+      box-shadow: var(--shadow-card-hover); opacity: 0; transform: translateY(12px);
+      transition: all 0.35s var(--ease); pointer-events: none;
+    }
+    .admin-toast.show { opacity: 1; transform: none; }
+
+    .admin-trigger {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 997;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--sidebar-bg); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: var(--shadow-card-hover);
+      transition: transform 0.3s var(--ease), opacity 0.3s;
+      border: none;
+    }
+    .admin-trigger:hover { transform: scale(1.08); }
+    .admin-trigger.hidden { opacity: 0; pointer-events: none; }
+    .admin-trigger svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; }
+
+    @media (max-width:640px) {
+      .admin-editor { width: 100%; max-width: 100%; }
+      .admin-bar { padding: 0.6rem 1rem; }
+      .admin-bar-left span { display: none; }
+    }
+</style></head>
+<body>
+<div class="scroll-progress-track"><div class="scroll-progress" id="scrollProgress"></div></div>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <a href="#home" class="logo">
+        <span class="logo-mark"><img src="assets/profile.png" alt="Md Palash Mia" onerror="this.style.display='none'"></span>
+        Md Palash Mia
+      </a>
+    </div>
+    <nav class="sidebar-nav" aria-label="Primary">
+      <div class="nav-indicator" id="navIndicator"></div>
+      <ul id="navLinks">
+        <li><a href="#home" data-nav class="active"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>Home</a></li>
+        <li><a href="#about" data-nav><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>About</a></li>
+        <li><a href="#experience" data-nav><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Experience</a></li>
+        <li><a href="#projects" data-nav><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>Projects<span class="nav-badge">3</span></a></li>
+        <li><a href="#skills" data-nav><svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>Skills</a></li>
+        <li><a href="#education" data-nav><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>Education</a></li>
+        <li><a href="#certificates" data-nav><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8 14l-2 7 6-3 6 3-2-7"/></svg>Certificates<span class="nav-badge">3</span></a></li>
+        <li><a href="#experts" data-nav><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>Experts</a></li>
+        <li><a href="#resume" data-nav><svg viewBox="0 0 24 24"><path d="M7 2h7l5 5v15H7z"/><path d="M14 2v5h5M9 13h6M9 17h6"/></svg>Resume</a></li>
+        <li><a href="#contact" data-nav><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-promo">
+      <div class="promo-icon"><svg viewBox="0 0 24 24"><path d="M7 2h7l5 5v15H7z"/><path d="M14 2v5h5"/><path d="M12 11v6M9 14l3-3 3 3"/></svg></div>
+      <h4>Get My Resume</h4>
+      <p>Download a complete PDF overview.</p>
+      <a href="assets/resume.pdf" class="btn btn-light btn-sm" download>Download PDF</a>
+    </div>
+  </aside>
+
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
+    <!-- HOME -->
+    <section id="home" class="panel hero-panel">
+      <div class="hero-split">
+        <div class="hero-left">
+          <span class="status-pill mint"><span class="dot"></span>Open to Opportunities</span>
+          <h1 class="hero-headline">
+            <span class="line"><span>Hi, I'm</span></span>
+            <span class="line"><span>Md Palash</span></span>
+            <span class="line"><span>Mia</span></span>
+          </h1>
+          <p class="hero-intro">A motivated Textile Engineer from BUTEX, specializing in Yarn Engineering with hands-on experience in Central Costing, inter-department coordination between Supply Chain, CAD, and IE. Passionate about efficient production planning, cost control, and global buyer relations.</p>
+          <!-- Removed hero CTAs -->
+        </div>
+        <div class="hero-right">
+          <div class="hero-cards-row">
+            <div class="profile-mini-card">
+              <h3>Md Palash Mia</h3>
+              <p class="muted">Bangladesh</p>
+              <div class="highlight-row">
+                <span class="highlight-badge">🎓 BUTEX'24</span>
+                <span class="highlight-badge">⚙️ Yarn Engineering</span>
+                <span class="highlight-badge">📊 Costing Pro</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-item"><strong>3.42</strong> CGPA</span>
+                <span class="stat-item"><strong>135+</strong> Cost Sheets/Mo</span>
+                <span class="stat-item"><strong>5</strong> Intl. Buyers</span>
+              </div>
+              <div class="profile-mini-tag"><svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>Open to Relocate</div>
+            </div>
+            <div class="profile-photo-card">
+              <img src="assets/profile.png" alt="Md Palash Mia" onerror="this.style.display='none'">
+            </div>
+          </div>
+          <!-- Removed connect-card (collaboration section) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT - Professional Background -->
+    <section id="about" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">About</span><h2>Professional Background</h2></div></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I am a recent Textile Engineering graduate from Bangladesh University of Textiles (BUTEX) with a specialization in Yarn Engineering and a CGPA of 3.42. My academic journey has equipped me with a strong foundation in textile manufacturing, yarn production processes, and quality assurance.</p>
+          <p>Professionally, I have gained practical experience as an Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, where I handle costing inquiries for international buyers including Decathlon, Haddad, Jack & Jones, and Malacca. I consistently prepare 120-150 cost sheets per month, driving significant efficiency improvements in the costing process.</p>
+          <p>I am passionate about building a career in textile merchandising, where I can leverage my technical knowledge and practical experience to support efficient production planning, cost control, and global buyer relations in a growth-oriented apparel organization.</p>
+        </div>
+        <div class="values-grid">
+          <div class="value-tile">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+            <div class="value-stat">3.42</div>
+            <div class="value-label">CGPA · BUTEX'24</div>
+            <div class="value-sub">Yarn Engineering</div>
+          </div>
+          <div class="value-tile mint">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+            <div class="value-stat">Asst. Merchandiser</div>
+            <div class="value-label">Central Costing</div>
+            <div class="value-sub">Snowtex · Apr 2026</div>
+          </div>
+          <div class="value-tile coral">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1z"/></svg></div>
+            <div class="value-stat">120-150</div>
+            <div class="value-label">Cost Sheets / Mo</div>
+            <div class="value-sub">With accuracy</div>
+          </div>
+          <div class="value-tile gold">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></div>
+            <div class="value-stat">5+ Buyers</div>
+            <div class="value-label">Global Accounts</div>
+            <div class="value-sub">Decathlon · Haddad · J&J · Malacca</div>
+          </div>
+          <div class="value-tile rose">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div class="value-stat">30%+</div>
+            <div class="value-label">Efficiency Boost</div>
+            <div class="value-sub">Systematic analysis</div>
+          </div>
+          <div class="value-tile sky">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="value-stat">MTO</div>
+            <div class="value-label">Management Training</div>
+            <div class="value-sub">Snowtex · Sep 2025 – Apr 2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Experience</span><h2>Professional Experience</h2></div></div>
+      
+      <!-- Assistant Merchandiser - Present -->
+      <div class="internship-layout">
+        <div class="internship-side"><h3>Assistant Merchandiser - Central Costing</h3><div class="company">Snowtex Outerwear Limited</div><div class="duration">April 2026 – Present</div></div>
+        <div>
+          <div class="internship-block"><h4>Key Responsibilities</h4><ul><li>Handle costing inquiries for Decathlon, Haddad, Jack & Jones, Malacca</li><li>Prepare 120-150 cost sheets per month with consistent accuracy</li><li>Coordinate with IE, CAD, and Supply Chain departments</li><li>Analyze tech packs and samples for accurate costing</li></ul></div>
+          <div class="internship-block"><h4>Key Achievement</h4><p>Drove a 30%+ improvement in costing process efficiency through systematic analysis and inter-department coordination.</p></div>
+          <div class="internship-block"><h4>Buyers Handled</h4><div class="tech-chip-row"><span class="tech-chip">Decathlon</span><span class="tech-chip alt">Haddad</span><span class="tech-chip alt2">Jack & Jones</span><span class="tech-chip">Malacca</span></div></div>
+        </div>
+      </div>
+
+      <!-- MTO Period -->
+      <div class="internship-layout">
+        <div class="internship-side mint" style="background:var(--mint-tile);"><h3>Management Training Officer (MTO)</h3><div class="company" style="color:var(--mint);">Snowtex Outerwear Limited</div><div class="duration">September 2025 – April 2026</div></div>
+        <div>
+          <div class="internship-block"><h4>Training &amp; Development</h4><ul><li>Intensive training in Central Costing processes and merchandising operations</li><li>Learned end-to-end costing workflow: tech pack analysis, sample evaluation, and buyer communication</li><li>Collaborated with IE, CAD, and Supply Chain teams to understand inter-departmental coordination</li><li>Developed proficiency in preparing cost sheets and analyzing buyer requirements</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Acquired comprehensive knowledge of garment costing, buyer relations, and production planning. Built a strong foundation that enabled a smooth transition to the Assistant Merchandiser role.</p></div>
+        </div>
+      </div>
+
+      <!-- Motin Spinning Internship -->
+      <div class="internship-layout">
+        <div class="internship-side coral" style="background:var(--coral-tile);"><h3>Intern - Yarn Manufacturing</h3><div class="company" style="color:var(--coral);">Motin Spinning Mills Ltd. (DBL Group)</div><div class="duration">2 Months</div></div>
+        <div>
+          <div class="internship-block"><h4>Hands-on Training</h4><ul><li>Ring, vortex, and rotor spinning methods</li><li>Yarn quality testing - count, strength, evenness, imperfection</li><li>HVI and AFIS testing for fiber quality</li><li>Blowroom efficiency testing and calculation</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Gained practical understanding of yarn manufacturing processes and quality control parameters in a production environment.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Projects</span><h2>Academic &amp; Independent Projects</h2></div></div>
+      <div class="projects-grid">
+        <article class="project-tile"><div class="project-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 13l4-4 4 4 4-6 6 6"/></svg></div><h3>Thesis: Ring vs Vortex Yarn</h3><p>Compared properties of ring and vortex yarn made from viscose, recycled cotton and polyester. Blended recycled cotton, modal and recycled polyester (30:40:30) for 20 Ne and 30 Ne yarns.</p><div><span class="label">Methodology</span><p>Evaluated tensile strength, elongation, CV%, imperfections, hairiness using HVI &amp; AFIS.</p></div><div><span class="label">Key Finding</span><p>Vortex yarns showed better evenness and fewer imperfections; ring yarns had higher strength.</p></div><div class="project-links"><a href="#" class="btn btn-outline btn-sm">Report</a></div></article>
+        <article class="project-tile"><div class="project-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22B08D" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><h3>Costing Automation</h3><p>Developed a structured approach to streamline central costing, reducing turnaround time by 30%.</p><div><span class="label">Outcome</span><p>Improved accuracy and speed for 150+ monthly cost sheets.</p></div><div class="project-links"><a href="#" class="btn btn-outline btn-sm">Case Study</a></div></article>
+        <article class="project-tile"><div class="project-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E86850" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div><h3>Fiber Testing &amp; Analysis</h3><p>Conducted HVI and AFIS testing for various fiber blends to assess quality and spinning performance.</p><div><span class="label">Tools</span><p>HVI, AFIS, Uster Tester</p></div><div class="project-links"><a href="#" class="btn btn-outline btn-sm">Details</a></div></article>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Skills</span><h2>Technical &amp; Professional Skills</h2></div></div>
+      <div class="skills-cols">
+        <div class="skill-block"><h3>Textile &amp; Merchandising</h3>
+          <div class="skill-row" data-level="88" data-color="primary"><div class="skill-row-label"><span>Garment Costing</span><span>88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="85" data-color="mint"><div class="skill-row-label"><span>Tech Pack Analysis</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="82" data-color="gold"><div class="skill-row-label"><span>Sample Analysis</span><span>82%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="80" data-color="sky"><div class="skill-row-label"><span>Marker Analysis</span><span>80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+        </div>
+        <div class="skill-block"><h3>Yarn Manufacturing</h3>
+          <div class="skill-row" data-level="80" data-color="rose"><div class="skill-row-label"><span>Ring Spinning</span><span>80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="75" data-color="primary"><div class="skill-row-label"><span>Rotor Spinning</span><span>75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="78" data-color="mint"><div class="skill-row-label"><span>Vortex Spinning</span><span>78%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="85" data-color="gold"><div class="skill-row-label"><span>Yarn Quality Testing</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+        </div>
+        <div class="skill-block"><h3>Software &amp; Tools</h3>
+          <div class="skill-row" data-level="92" data-color="coral"><div class="skill-row-label"><span>MS Excel / Sheets</span><span>92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="88" data-color="rose"><div class="skill-row-label"><span>MS Word / PowerPoint</span><span>88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="85" data-color="primary"><div class="skill-row-label"><span>Google Docs / Drive</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+          <div class="skill-row" data-level="90" data-color="gold"><div class="skill-row-label"><span>Business Communication</span><span>90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Education</span><h2>Academic Background</h2></div></div>
+      <div class="edu-list">
+        <div class="edu-tile"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2019 - 2024</div><h3>Bangladesh University of Textiles (BUTEX)</h3><div class="edu-dept">B.Sc. in Textile Engineering — Yarn Engineering</div><div class="edu-meta"><span>CGPA: 3.42 / 4.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+        <div class="edu-tile mint"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22B08D" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2016 - 2018</div><h3>Jatir Janak Bangabandhu Sheikh Mujibur Rahman Govt. College</h3><div class="edu-dept">H.S.C — Science</div><div class="edu-meta"><span>GPA: 5.00 / 5.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+        <div class="edu-tile coral"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E86850" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2014 - 2016</div><h3>Bangamata Sheikh Fazillatunnessa Mujib Govt. Secondary School</h3><div class="edu-dept">S.S.C — Science</div><div class="edu-meta"><span>CGPA: 5.00 / 5.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section id="certificates" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Certificates</span><h2>Certifications &amp; Training</h2></div></div>
+      <div class="cert-grid">
+        <div class="cert-tile"><div class="cert-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D4A02B" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 10l3 3 5-5"/></svg></div><h3>Yarn Manufacturing Training</h3><div class="cert-org">Motin Spinning Mills Ltd. (DBL Group)</div><div class="cert-date">2023</div><div class="cert-actions"><a href="#" class="btn btn-outline btn-sm">View</a></div></div>
+        <div class="cert-tile"><div class="cert-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 10l3 3 5-5"/></svg></div><h3>BUTEX Spinners Club</h3><div class="cert-org">Bangladesh University of Textiles</div><div class="cert-date">Active Member</div><div class="cert-actions"><a href="#" class="btn btn-outline btn-sm">View</a></div></div>
+        <div class="cert-tile"><div class="cert-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D4536A" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 10l3 3 5-5"/></svg></div><h3>Textile Workshops &amp; Seminars</h3><div class="cert-org">Various Industry Events</div><div class="cert-date">2019 - 2024</div><div class="cert-actions"><a href="#" class="btn btn-outline btn-sm">View</a></div></div>
+      </div>
+    </section>
+
+    <!-- EXPERTS OPINION -->
+    <section id="experts" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Experts Opinion</span><h2>What Experts Say</h2></div></div>
+      <div class="experts-grid">
+        <div class="expert-card">
+          <img src="assets/expert1.jpg" alt="Expert 1" class="expert-photo" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Dr. Md. Rezaul Karim</div>
+          <div class="expert-title">Professor, BUTEX</div>
+          <div class="expert-quote">"Palash is one of the most dedicated students I've taught. His thesis work on yarn properties was meticulous and showed great analytical depth."</div>
+        </div>
+        <div class="expert-card">
+          <img src="assets/expert2.jpg" alt="Expert 2" class="expert-photo" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Ms. Nurun Nahar</div>
+          <div class="expert-title">Head of Costing, Snowtex</div>
+          <div class="expert-quote">"Palash's ability to handle 150+ cost sheets monthly with precision and his coordination skills have been invaluable to our team."</div>
+        </div>
+        <div class="expert-card">
+          <img src="assets/expert3.jpg" alt="Expert 3" class="expert-photo" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Engr. Sajjad Hossain</div>
+          <div class="expert-title">Plant Manager, DBL Group</div>
+          <div class="expert-quote">"During his internship, Palash showed exceptional understanding of spinning processes and quality control. He's a quick learner with a bright future."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Resume</span><h2>Download My Resume</h2></div></div>
+      <div class="resume-layout">
+        <div class="resume-preview-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg></div>
+        <div class="resume-text"><h3>Md Palash Mia — Resume</h3><p>A complete overview of my education, technical skills, professional experience, and research projects, formatted for print and ATS systems.</p><a href="assets/resume.pdf" class="btn btn-primary resume-cta" download>Download Resume (PDF)</a></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Contact</span><h2>Get In Touch</h2><p class="panel-sub">Open to opportunities in garment and textile manufacturing, quality assurance, and production engineering.</p></div></div>
+      <div class="contact-grid">
+        <div class="contact-tiles">
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div><h4>Email</h4><p>palashmd985bd@gmail.com</p></div></div>
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#22B08D" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"/></svg></div><div><h4>Phone</h4><p>+880 1516058708</p></div></div>
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#0A66C2" stroke-width="1.8"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9h4v2c1-1.5 2.7-2.3 4.5-2.3 3 0 5.5 2 5.5 6.3V21h-4v-5c0-1.7-.7-3-2.3-3S13 14.3 13 16v5h-4z"/></svg></div><div><h4>LinkedIn</h4><p>linkedin.com/in/palash1423</p></div></div>
+        </div>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row"><div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" required></div><div class="form-group"><label for="cf-email">Email</label><input type="email" id="cf-email" required></div></div>
+          <div class="form-group"><label for="cf-subject">Subject</label><input type="text" id="cf-subject" required></div>
+          <div class="form-group"><label for="cf-message">Message</label><textarea id="cf-message" rows="5" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note" id="formNote" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer"><p>&copy; <span id="year"></span> Md Palash Mia. Designed with professionalism and passion.</p></footer>
+  </main>
+</div>
+
+<button class="back-to-top" id="backToTop"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script>
+// ===== CONFIG-DRIVEN CONTENT LOADER =====
+(function() {
+  'use strict';
+  const CONFIG_URL = 'config.json';
+
+  async function loadConfig() {
+    try {
+      const response = await fetch(CONFIG_URL + '?v=' + Date.now());
+      if (!response.ok) throw new Error('Failed to load config');
+      const cfg = await response.json();
+      applyConfig(cfg);
+      console.log('Portfolio config loaded from config.json');
+    } catch (err) {
+      console.warn('Config load failed, using inline defaults:', err.message);
+    }
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function applyConfig(cfg) {
+    if (!cfg) return;
+
+    // HERO
+    if (cfg.hero) {
+      const sp = document.querySelector('.status-pill');
+      if (sp && cfg.hero.status) sp.innerHTML = '<span class="dot"></span>' + escapeHtml(cfg.hero.status);
+      const lines = document.querySelectorAll('.hero-headline .line span');
+      if (lines[0] && cfg.hero.line1) lines[0].textContent = cfg.hero.line1;
+      if (lines[1] && cfg.hero.line2) lines[1].textContent = cfg.hero.line2;
+      if (lines[2] && cfg.hero.line3) lines[2].textContent = cfg.hero.line3;
+      const intro = document.querySelector('.hero-intro');
+      if (intro && cfg.hero.description) intro.textContent = cfg.hero.description;
+      const img = document.querySelector('.profile-photo-card img');
+      if (img && cfg.hero.image) img.src = cfg.hero.image;
+    }
+
+    // PROFILE CARD
+    if (cfg.profileCard) {
+      const mc = document.querySelector('.profile-mini-card');
+      if (mc) {
+        const h3 = mc.querySelector('h3');
+        if (h3 && cfg.profileCard.name) h3.textContent = cfg.profileCard.name;
+        const muted = mc.querySelector('.muted');
+        if (muted && cfg.profileCard.location) muted.textContent = cfg.profileCard.location;
+        const br = mc.querySelector('.highlight-row');
+        if (br && cfg.profileCard.badges) {
+          br.innerHTML = cfg.profileCard.badges.map(b => '<span class="highlight-badge">' + escapeHtml(b) + '</span>').join('');
+        }
+        const sr = mc.querySelector('.stat-row');
+        if (sr && cfg.profileCard.stats) {
+          sr.innerHTML = cfg.profileCard.stats.map(s => '<span class="stat-item"><strong>' + escapeHtml(s.value) + '</strong>' + escapeHtml(s.label) + '</span>').join('');
+        }
+        const tag = mc.querySelector('.profile-mini-tag');
+        if (tag && cfg.profileCard.tag) {
+          tag.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>' + escapeHtml(cfg.profileCard.tag);
+        }
+      }
+    }
+
+    // ABOUT
+    if (cfg.about && cfg.about.paragraphs) {
+      const at = document.querySelector('.about-text');
+      if (at) at.innerHTML = cfg.about.paragraphs.map(p => '<p>' + escapeHtml(p) + '</p>').join('');
+    }
+
+    // CONTACT
+    if (cfg.contact) {
+      const ct = document.querySelectorAll('.contact-tile');
+      if (ct[0] && cfg.contact.email) ct[0].querySelector('p').textContent = cfg.contact.email;
+      if (ct[1] && cfg.contact.phone) ct[1].querySelector('p').textContent = cfg.contact.phone;
+      if (ct[2] && cfg.contact.linkedin) ct[2].querySelector('p').textContent = cfg.contact.linkedin;
+      const ps = document.querySelector('#contact .panel-sub');
+      if (ps && cfg.contact.availability) ps.textContent = cfg.contact.availability;
+    }
+
+    // SECTION VISIBILITY
+    if (cfg.sections) {
+      Object.entries(cfg.sections).forEach(([id, visible]) => {
+        const sec = document.getElementById(id);
+        if (sec) sec.style.display = visible ? '' : 'none';
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadConfig);
+  } else {
+    loadConfig();
+  }
+  window.__portfolioConfig = { refresh: loadConfig };
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.panel, .edu-tile, .project-tile, .cert-tile, .internship-side, .skill-row, .value-tile').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    document.querySelectorAll('.skill-bar-fill').forEach(el => { const row = el.closest('.skill-row'); if(row) el.style.width = row.getAttribute('data-level') + '%'; });
+    runBasicFunctionality(); return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero
+  const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.9 } });
+  heroTimeline.from('.sidebar', { opacity: 0, y: -30, duration: 0.9 }, 0)
+    .from('.status-pill', { opacity: 0, y: 20, scale: 0.95, duration: 0.6 }, 0.15)
+    .from('.hero-headline .line span', { opacity: 0, y: 40, duration: 0.9, stagger: 0.12 }, 0.25)
+    .from('.hero-intro', { opacity: 0, y: 30, duration: 0.8 }, 0.6)
+    .from('.profile-mini-card', { opacity: 0, y: 30, scale: 0.96, duration: 0.8 }, 0.85)
+    .from('.profile-photo-card', { opacity: 0, y: 30, scale: 0.96, duration: 0.8 }, 0.95);
+
+  gsap.to('.blob-1', { x: 40, y: 30, scale: 1.05, duration: 26, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  gsap.to('.blob-2', { x: -35, y: -25, scale: 1.08, duration: 32, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  gsap.to('.blob-3', { x: 25, y: -30, scale: 0.95, duration: 22, ease: 'sine.inOut', repeat: -1, yoyo: true });// Section animations - CORRECTED: Text from LEFT, Cards from RIGHT
+  // About text slides from LEFT
+  gsap.from('.about-text', { opacity: 0, x: -60, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.about-text', start: 'top 85%', toggleActions: 'play none none reverse' } });
+  
+  // Value tiles slide from RIGHT (x: 60)
+  document.querySelectorAll('.value-tile').forEach((tile, i) => { 
+    gsap.from(tile, { 
+      opacity: 0, 
+      x: 60, 
+      duration: 0.7, 
+      ease: 'power3.out', 
+      scrollTrigger: { trigger: tile, start: 'top 90%', toggleActions: 'play none none reverse' }, 
+      delay: i * 0.08 
+    }); 
+  });
+  
+  document.querySelectorAll('.edu-tile').forEach((tile, i) => { 
+    gsap.from(tile, { opacity: 0, x: -60, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 88%', toggleActions: 'play none none reverse' }, delay: i * 0.15 }); 
+  });
+  
+  document.querySelectorAll('.skill-row').forEach((row, i) => { 
+    const level = parseInt(row.dataset.level) || 0; 
+    const fill = row.querySelector('.skill-bar-fill'); 
+    const direction = i % 2 === 0 ? -30 : 30; 
+    gsap.from(row, { opacity: 0, x: direction, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: row, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.04 }); 
+    if(fill) { 
+      fill.style.width = '0%'; 
+      gsap.to(fill, { width: level + '%', duration: 1.8, ease: 'power2.out', scrollTrigger: { trigger: row, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.04 + 0.2 }); 
+    } 
+  });
+  
+  document.querySelectorAll('.internship-side').forEach((side, i) => { 
+    gsap.from(side, { opacity: 0, x: -50, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: side, start: 'top 85%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+  });
+  
+  document.querySelectorAll('.project-tile').forEach((tile, i) => { 
+    const dir = ['-50','50','-30'][i%3]; 
+    gsap.from(tile, { opacity: 0, x: parseInt(dir), y: 20, scale: 0.95, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+  });
+  
+  document.querySelectorAll('.cert-tile').forEach((tile, i) => { 
+    gsap.from(tile, { opacity: 0, x: 50, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.08 }); 
+  });
+  
+  document.querySelectorAll('.expert-card').forEach((card, i) => { 
+    gsap.from(card, { opacity: 0, y: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+  });
+  
+  gsap.from('.resume-preview-tile', { opacity: 0, x: -50, rotation: -5, duration: 0.8, ease: 'back.out(1.4)', scrollTrigger: { trigger: '.resume-preview-tile', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  gsap.from('.resume-text', { opacity: 0, x: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: '.resume-text', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  
+  document.querySelectorAll('.contact-tile').forEach((tile, i) => { 
+    gsap.from(tile, { opacity: 0, x: -40, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.06 }); 
+  });
+  
+  gsap.from('.contact-form', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact-form', start: 'top 88%', toggleActions: 'play none none reverse' } });
+
+  // Navigation
+  const navAnchors = document.querySelectorAll('#navLinks a[data-nav]');
+  const sections = document.querySelectorAll('main.content section[id]');
+  const navIndicator = document.getElementById('navIndicator');
+  const updateActiveNav = (id) => {
+    navAnchors.forEach(a => { const isActive = a.getAttribute('href') === `#${id}`; a.classList.toggle('active', isActive); if (isActive && navIndicator) { const listRect = document.getElementById('navLinks').getBoundingClientRect(); const linkRect = a.getBoundingClientRect(); const offsetTop = linkRect.top - listRect.top; gsap.to(navIndicator, { y: offsetTop, height: linkRect.height, duration: 0.4, ease: 'power3.out' }); } });
+  };
+  sections.forEach(sec => { ScrollTrigger.create({ trigger: sec, start: 'top 30%', end: 'bottom 30%', onEnter: () => updateActiveNav(sec.id), onEnterBack: () => updateActiveNav(sec.id) }); });
+  navAnchors.forEach(link => { link.addEventListener('click', (e) => { const href = link.getAttribute('href'); if (href && href.startsWith('#')) { e.preventDefault(); const target = document.querySelector(href); if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' }); const sidebar = document.getElementById('sidebar'); const toggle = document.getElementById('sidebarToggle'); const overlay = document.getElementById('sidebarOverlay'); if (sidebar && sidebar.classList.contains('open')) { sidebar.classList.remove('open'); toggle?.classList.remove('open'); toggle?.setAttribute('aria-expanded', 'false'); overlay?.classList.remove('visible'); } } }); });
+
+  // Back to top & scroll progress
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (scrollProgress) { gsap.to(scrollProgress, { width: '100%', ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.1 } }); }
+  if (backToTop) { ScrollTrigger.create({ trigger: document.body, start: 'top -480px', onEnter: () => backToTop.classList.remove('visible'), onEnterBack: () => backToTop.classList.add('visible'), onLeave: () => backToTop.classList.add('visible'), onLeaveBack: () => backToTop.classList.remove('visible') }); }
+
+  // Sidebar toggle
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  if (sidebarToggle && sidebar && sidebarOverlay) {
+    sidebarToggle.addEventListener('click', () => { const isOpen = sidebar.classList.toggle('open'); sidebarToggle.classList.toggle('open', isOpen); sidebarToggle.setAttribute('aria-expanded', String(isOpen)); sidebarOverlay.classList.toggle('visible', isOpen); });
+    sidebarOverlay.addEventListener('click', () => { sidebar.classList.remove('open'); sidebarToggle.classList.remove('open'); sidebarToggle.setAttribute('aria-expanded', 'false'); sidebarOverlay.classList.remove('visible'); });
+  }
+
+  // Contact form
+  const contactForm = document.getElementById('contactForm');
+  const formNote = document.getElementById('formNote');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => { e.preventDefault(); if (!contactForm.checkValidity()) { formNote.textContent = 'Please fill in all required fields correctly.'; return; } formNote.textContent = 'Message ready to send — connect this form to your email service to go live.'; contactForm.reset(); });
+  }
+  document.getElementById('year').textContent = new Date().getFullYear();
+  ScrollTrigger.refresh();
+  window.addEventListener('resize', () => ScrollTrigger.refresh());
+
+  function runBasicFunctionality() {
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    if (sidebarToggle && sidebar && sidebarOverlay) {
+      sidebarToggle.addEventListener('click', () => { const isOpen = sidebar.classList.toggle('open'); sidebarToggle.classList.toggle('open', isOpen); sidebarToggle.setAttribute('aria-expanded', String(isOpen)); sidebarOverlay.classList.toggle('visible', isOpen); });
+      sidebarOverlay.addEventListener('click', () => { sidebar.classList.remove('open'); sidebarToggle.classList.remove('open'); sidebarToggle.setAttribute('aria-expanded', 'false'); sidebarOverlay.classList.remove('visible'); });
+    }
+    const progress = document.getElementById('scrollProgress');
+    if (progress) { window.addEventListener('scroll', () => { const scrollTop = window.scrollY; const docHeight = document.documentElement.scrollHeight - window.innerHeight; progress.style.width = docHeight > 0 ? (scrollTop / docHeight) * 100 + '%' : '0%'; }); }
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) { window.addEventListener('scroll', () => { backToTop.classList.toggle('visible', window.scrollY > 480); }); backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' })); }
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const contactForm = document.getElementById('contactForm');
+    const formNote = document.getElementById('formNote');
+    if (contactForm) { contactForm.addEventListener('submit', (e) => { e.preventDefault(); if (!contactForm.checkValidity()) { formNote.textContent = 'Please fill in all required fields correctly.'; return; } formNote.textContent = 'Message ready to send — connect this form to your email service to go live.'; contactForm.reset(); }); }
+  }
+});
+</script>
+
+<!-- ADMIN TRIGGER BUTTON -->
+<button class="admin-trigger" id="adminTrigger" title="Admin Panel">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-7.35 16.76l.35.35V20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-.89l.35-.35A10 10 0 0 0 12 2zm0 4a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+</button>
+
+<!-- PASSWORD GATE -->
+<div class="admin-gate" id="adminGate">
+  <div class="admin-gate-panel">
+    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <h2>Admin Access</h2>
+    <p>Enter your password to customize the website.</p>
+    <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="off">
+    <div class="error" id="adminError">Incorrect password. Please try again.</div>
+    <button class="btn btn-primary" id="adminLoginBtn" style="width:100%;">Enter Admin</button>
+    <button class="btn btn-outline btn-sm" id="adminCancelBtn" style="width:100%;margin-top:0.6rem;">Back to Site</button>
+  </div>
+</div>
+
+<!-- ADMIN TOP BAR -->
+<div class="admin-bar" id="adminBar">
+  <div class="admin-bar-left">
+    <span class="dot"></span>
+    <span>Admin Mode Active</span>
+  </div>
+  <div class="admin-bar-right">
+    <button class="btn btn-sm" id="adminSaveBtn">Save Changes</button>
+    <button class="btn btn-sm" id="adminExportBtn">Export JSON</button>
+    <button class="btn btn-sm" id="adminExitBtn">Exit Admin</button>
+  </div>
+</div>
+
+<!-- ADMIN SLIDE-OUT EDITOR -->
+<div class="admin-editor" id="adminEditor">
+  <div class="admin-editor-header">
+    <h3>Website Editor</h3>
+    <button class="btn btn-outline btn-sm" id="adminCloseEditor">Close</button>
+  </div>
+  <div class="admin-editor-body">
+    <div class="tabs">
+      <button class="tab active" data-admin-tab="hero">Hero</button>
+      <button class="tab" data-admin-tab="about">About</button>
+      <button class="tab" data-admin-tab="experience">Exp</button>
+      <button class="tab" data-admin-tab="projects">Proj</button>
+      <button class="tab" data-admin-tab="skills">Skills</button>
+      <button class="tab" data-admin-tab="education">Edu</button>
+      <button class="tab" data-admin-tab="contact">Contact</button>
+      <button class="tab" data-admin-tab="sections">Sections</button>
+    </div>
+
+    <!-- HERO TAB -->
+    <div class="sub-panel active" id="admin-tab-hero">
+      <div class="form-group"><label>Status Pill</label><input type="text" id="a-heroStatus" value="Open to Opportunities"></div>
+      <div class="form-group"><label>Headline Line 1</label><input type="text" id="a-heroLine1" value="Hi, I'm"></div>
+      <div class="form-group"><label>Headline Line 2</label><input type="text" id="a-heroLine2" value="Md Palash"></div>
+      <div class="form-group"><label>Headline Line 3</label><input type="text" id="a-heroLine3" value="Mia"></div>
+      <div class="form-group"><label>Description</label><textarea id="a-heroDesc" rows="3">A motivated Textile Engineer from BUTEX, specializing in Yarn Engineering with hands-on experience in Central Costing, inter-department coordination between Supply Chain, CAD and IE. Passionate about efficient production planning, cost control and global buyer relations.</textarea></div>
+      <div class="form-group"><label>Profile Image Path</label><input type="text" id="a-heroImage" value="assets/profile.png"></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.2rem 0;">
+      <div class="section-card">
+        <div class="section-card-header"><h4>Profile Mini Card</h4></div>
+        <div class="form-group"><label>Name</label><input type="text" id="a-miniName" value="Md Palash Mia"></div>
+        <div class="form-group"><label>Location</label><input type="text" id="a-miniLocation" value="Bangladesh"></div>
+        <div class="form-group"><label>Badges (comma separated)</label><input type="text" id="a-miniBadges" value="🎓 BUTEX'24, ⚙️ Yarn Engineering, 📊 Costing Pro"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Stat 1 Label</label><input type="text" id="a-stat1Label" value="CGPA"></div>
+          <div class="form-group"><label>Stat 1 Value</label><input type="text" id="a-stat1Value" value="3.42"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Stat 2 Label</label><input type="text" id="a-stat2Label" value="Cost Sheets/Mo"></div>
+          <div class="form-group"><label>Stat 2 Value</label><input type="text" id="a-stat2Value" value="135+"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Stat 3 Label</label><input type="text" id="a-stat3Label" value="Intl. Buyers"></div>
+          <div class="form-group"><label>Stat 3 Value</label><input type="text" id="a-stat3Value" value="5"></div>
+        </div>
+        <div class="form-group"><label>Tag Text</label><input type="text" id="a-miniTag" value="Open to Relocate"></div>
+      </div>
+    </div><!-- ABOUT TAB -->
+    <div class="sub-panel" id="admin-tab-about">
+      <div class="form-group"><label>Paragraph 1</label><textarea id="a-aboutP1" rows="3">I am a recent Textile Engineering graduate from Bangladesh University of Textiles (BUTEX) with a specialization in Yarn Engineering and a CGPA of 3.42. My academic journey has equipped me with a strong foundation in textile manufacturing, yarn production processes, and quality assurance.</textarea></div>
+      <div class="form-group"><label>Paragraph 2</label><textarea id="a-aboutP2" rows="3">Professionally, I have gained practical experience as an Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, where I handle costing inquiries for international buyers including Decathlon, Haddad, Jack & Jones, and Malacca. I consistently prepare 120-150 cost sheets per month, driving significant efficiency improvements in the costing process.</textarea></div>
+      <div class="form-group"><label>Paragraph 3</label><textarea id="a-aboutP3" rows="3">I am passionate about building a career in textile merchandising, where I can leverage my technical knowledge and practical experience to support efficient production planning, cost control, and global buyer relations in a growth-oriented apparel organization.</textarea></div>
+    </div>
+
+    <!-- EXPERIENCE TAB -->
+    <div class="sub-panel" id="admin-tab-experience">
+      <div class="section-card">
+        <div class="section-card-header"><h4>Position 1</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-exp1Title" value="Assistant Merchandiser - Central Costing"></div>
+        <div class="form-group"><label>Company</label><input type="text" id="a-exp1Company" value="Snowtex Outerwear Limited"></div>
+        <div class="form-group"><label>Duration</label><input type="text" id="a-exp1Duration" value="April 2026 – Present"></div>
+        <div class="form-group"><label>Buyers</label><input type="text" id="a-exp1Buyers" value="Decathlon, Haddad, Jack & Jones, Malacca"></div>
+        <div class="form-group"><label>Achievement</label><textarea id="a-exp1Achievement" rows="2">Drove a 30%+ improvement in costing process efficiency through systematic analysis and inter-department coordination.</textarea></div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Position 2</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-exp2Title" value="Management Training Officer (MTO)"></div>
+        <div class="form-group"><label>Company</label><input type="text" id="a-exp2Company" value="Snowtex Outerwear Limited"></div>
+        <div class="form-group"><label>Duration</label><input type="text" id="a-exp2Duration" value="September 2025 – April 2026"></div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Position 3</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-exp3Title" value="Intern - Yarn Manufacturing"></div>
+        <div class="form-group"><label>Company</label><input type="text" id="a-exp3Company" value="Motin Spinning Mills Ltd. (DBL Group)"></div>
+        <div class="form-group"><label>Duration</label><input type="text" id="a-exp3Duration" value="2 Months"></div>
+      </div>
+    </div>
+
+    <!-- PROJECTS TAB -->
+    <div class="sub-panel" id="admin-tab-projects">
+      <div class="section-card">
+        <div class="section-card-header"><h4>Project 1</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-proj1Title" value="Thesis: Ring vs Vortex Yarn"></div>
+        <div class="form-group"><label>Description</label><textarea id="a-proj1Desc" rows="2">Compared properties of ring and vortex yarn made from viscose, recycled cotton and polyester.</textarea></div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Project 2</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-proj2Title" value="Costing Automation"></div>
+        <div class="form-group"><label>Description</label><textarea id="a-proj2Desc" rows="2">Developed a structured approach to streamline central costing, reducing turnaround time by 30%.</textarea></div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Project 3</h4></div>
+        <div class="form-group"><label>Title</label><input type="text" id="a-proj3Title" value="Fiber Testing & Analysis"></div>
+        <div class="form-group"><label>Description</label><textarea id="a-proj3Desc" rows="2">Conducted HVI and AFIS testing for various fiber blends to assess quality and spinning performance.</textarea></div>
+      </div>
+    </div>
+
+    <!-- SKILLS TAB -->
+    <div class="sub-panel" id="admin-tab-skills">
+      <div class="section-card">
+        <div class="section-card-header"><h4>Skill 1</h4></div>
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="a-skill1Name" value="Garment Costing"></div>
+          <div class="form-group"><label>Level</label><input type="number" id="a-skill1Level" value="88" min="0" max="100"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Skill 2</h4></div>
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="a-skill2Name" value="Tech Pack Analysis"></div>
+          <div class="form-group"><label>Level</label><input type="number" id="a-skill2Level" value="85" min="0" max="100"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>Skill 3</h4></div>
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="a-skill3Name" value="MS Excel / Sheets"></div>
+          <div class="form-group"><label>Level</label><input type="number" id="a-skill3Level" value="92" min="0" max="100"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCATION TAB -->
+    <div class="sub-panel" id="admin-tab-education">
+      <div class="section-card">
+        <div class="section-card-header"><h4>University</h4></div>
+        <div class="form-group"><label>Institution</label><input type="text" id="a-edu1Inst" value="Bangladesh University of Textiles (BUTEX)"></div>
+        <div class="form-group"><label>Degree</label><input type="text" id="a-edu1Degree" value="B.Sc. in Textile Engineering — Yarn Engineering"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Years</label><input type="text" id="a-edu1Years" value="2019 - 2024"></div>
+          <div class="form-group"><label>CGPA</label><input type="text" id="a-edu1Gpa" value="3.42 / 4.00"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>College</h4></div>
+        <div class="form-group"><label>Institution</label><input type="text" id="a-edu2Inst" value="Jatir Janak Bangabandhu Sheikh Mujibur Rahman Govt. College"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Years</label><input type="text" id="a-edu2Years" value="2016 - 2018"></div>
+          <div class="form-group"><label>GPA</label><input type="text" id="a-edu2Gpa" value="5.00 / 5.00"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-card-header"><h4>School</h4></div>
+        <div class="form-group"><label>Institution</label><input type="text" id="a-edu3Inst" value="Bangamata Sheikh Fazillatunnessa Mujib Govt. Secondary School"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Years</label><input type="text" id="a-edu3Years" value="2014 - 2016"></div>
+          <div class="form-group"><label>CGPA</label><input type="text" id="a-edu3Gpa" value="5.00 / 5.00"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT TAB -->
+    <div class="sub-panel" id="admin-tab-contact">
+      <div class="form-group"><label>Email</label><input type="text" id="a-contactEmail" value="palashmd985bd@gmail.com"></div>
+      <div class="form-group"><label>Phone</label><input type="text" id="a-contactPhone" value="+880 1516058708"></div>
+      <div class="form-group"><label>LinkedIn</label><input type="text" id="a-contactLinkedin" value="linkedin.com/in/palash1423"></div>
+      <div class="form-group"><label>Availability</label><textarea id="a-contactAvail" rows="2">Open to opportunities in garment and textile manufacturing, quality assurance, and production engineering.</textarea></div>
+    </div>
+
+    <!-- SECTIONS TAB -->
+    <div class="sub-panel" id="admin-tab-sections">
+      <p style="font-family:var(--font-mono);font-size:0.78rem;color:var(--ink-muted);margin-bottom:1rem;">Drag to reorder. Click toggle to show/hide.</p>
+      <div class="drag-list" id="adminSectionList">
+        <div class="drag-item" data-section="home" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Hero</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="home"></div></div>
+        </div>
+        <div class="drag-item" data-section="about" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">About</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="about"></div></div>
+        </div>
+        <div class="drag-item" data-section="experience" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Experience</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="experience"></div></div>
+        </div>
+        <div class="drag-item" data-section="projects" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Projects</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="projects"></div></div>
+        </div>
+        <div class="drag-item" data-section="skills" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Skills</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="skills"></div></div>
+        </div>
+        <div class="drag-item" data-section="education" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Education</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="education"></div></div>
+        </div>
+        <div class="drag-item" data-section="certificates" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Certificates</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="certificates"></div></div>
+        </div>
+        <div class="drag-item" data-section="experts" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Experts</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="experts"></div></div>
+        </div>
+        <div class="drag-item" data-section="resume" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Resume</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="resume"></div></div>
+        </div>
+        <div class="drag-item" data-section="contact" draggable="true">
+          <svg class="drag-handle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h8M8 12h8M8 18h8"/></svg>
+          <span class="drag-title">Contact</span>
+          <div class="drag-toggle"><div class="toggle-switch active" data-section="contact"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-toast" id="adminToast">Changes saved!</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ===== PASSWORD CONFIG =====
+  // CHANGE THIS to your own password
+  const ADMIN_PASSWORD = 'palash2024';
+
+  // ===== DOM REFERENCES =====
+  const adminTrigger = document.getElementById('adminTrigger');
+  const adminGate = document.getElementById('adminGate');
+  const adminBar = document.getElementById('adminBar');
+  const adminEditor = document.getElementById('adminEditor');
+  const adminPassword = document.getElementById('adminPassword');
+  const adminLoginBtn = document.getElementById('adminLoginBtn');
+  const adminCancelBtn = document.getElementById('adminCancelBtn');
+  const adminError = document.getElementById('adminError');
+  const adminExitBtn = document.getElementById('adminExitBtn');
+  const adminCloseEditor = document.getElementById('adminCloseEditor');
+  const adminSaveBtn = document.getElementById('adminSaveBtn');
+  const adminExportBtn = document.getElementById('adminExportBtn');
+  const adminToast = document.getElementById('adminToast');
+
+  let isAdmin = false;
+
+  // ===== SHOW/HIDE ADMIN =====
+  function showGate() {
+    adminGate.classList.add('active');
+    adminPassword.value = '';
+    adminError.classList.remove('show');
+    adminPassword.focus();
+  }
+  function hideGate() {
+    adminGate.classList.remove('active');
+  }
+  function enterAdmin() {
+    isAdmin = true;
+    hideGate();
+    adminTrigger.classList.add('hidden');
+    adminBar.classList.add('active');
+    adminEditor.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function exitAdmin() {
+    isAdmin = false;
+    adminBar.classList.remove('active');
+    adminEditor.classList.remove('active');
+    adminTrigger.classList.remove('hidden');
+    document.body.style.overflow = '';
+  }
+
+  adminTrigger.addEventListener('click', showGate);
+  adminCancelBtn.addEventListener('click', hideGate);
+  adminExitBtn.addEventListener('click', exitAdmin);
+  adminCloseEditor.addEventListener('click', () => adminEditor.classList.remove('active'));
+
+  // Password login
+  function attemptLogin() {
+    if (adminPassword.value === ADMIN_PASSWORD) {
+      enterAdmin();
+    } else {
+      adminError.classList.add('show');
+      adminPassword.value = '';
+      adminPassword.focus();
+    }
+  }
+  adminLoginBtn.addEventListener('click', attemptLogin);
+  adminPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptLogin(); });
+
+  // ===== ADMIN TABS =====
+  const adminTabs = document.querySelectorAll('.admin-editor .tab[data-admin-tab]');
+  const adminSubPanels = document.querySelectorAll('.admin-editor .sub-panel');
+  adminTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.adminTab;
+      adminTabs.forEach(x => x.classList.remove('active'));
+      tab.classList.add('active');
+      adminSubPanels.forEach(p => p.classList.remove('active'));
+      document.getElementById('admin-tab-' + t)?.classList.add('active');
+    });
+  });
+
+  // ===== COLOR SWATCHES =====
+  // (Removed - new hero uses profile cards instead of keyword circles)
+
+// ===== RANGE SLIDERS =====
+  // (Removed - new hero uses profile cards instead of keyword circles)
+
+// ===== TEXT INPUTS — LIVE UPDATE =====
+  const textBindings = [
+    // Hero
+    { id: 'a-heroStatus', target: '.status-pill', html: false, text: true },
+    { id: 'a-heroLine1', target: '.hero-headline .line:nth-child(1) span', html: false },
+    { id: 'a-heroLine2', target: '.hero-headline .line:nth-child(2) span', html: false },
+    { id: 'a-heroLine3', target: '.hero-headline .line:nth-child(3) span', html: false },
+    { id: 'a-heroDesc', target: '.hero-intro', html: false },
+    { id: 'a-heroImage', target: '.profile-photo-card img', attr: 'src' },
+    // Profile Mini Card
+    { id: 'a-miniName', target: '.profile-mini-card h3', html: false },
+    { id: 'a-miniLocation', target: '.profile-mini-card .muted', html: false },
+    // Stats
+    { id: 'a-stat1Value', target: '.profile-mini-card .stat-item:nth-child(1) strong', html: false },
+    { id: 'a-stat1Label', target: '.profile-mini-card .stat-item:nth-child(1)', html: false, text: true },
+    { id: 'a-stat2Value', target: '.profile-mini-card .stat-item:nth-child(2) strong', html: false },
+    { id: 'a-stat2Label', target: '.profile-mini-card .stat-item:nth-child(2)', html: false, text: true },
+    { id: 'a-stat3Value', target: '.profile-mini-card .stat-item:nth-child(3) strong', html: false },
+    { id: 'a-stat3Label', target: '.profile-mini-card .stat-item:nth-child(3)', html: false, text: true },
+    { id: 'a-miniTag', target: '.profile-mini-tag', html: false },
+    // About
+    { id: 'a-aboutP1', target: '#about .about-text p:nth-child(1)', html: false },
+    { id: 'a-aboutP2', target: '#about .about-text p:nth-child(2)', html: false },
+    { id: 'a-aboutP3', target: '#about .about-text p:nth-child(3)', html: false },
+    // Experience
+    { id: 'a-exp1Title', target: '#experience .internship-layout:nth-child(1) h3', html: false },
+    { id: 'a-exp1Company', target: '#experience .internship-layout:nth-child(1) .company', html: false },
+    { id: 'a-exp1Duration', target: '#experience .internship-layout:nth-child(1) .duration', html: false },
+    { id: 'a-exp2Title', target: '#experience .internship-layout:nth-child(2) h3', html: false },
+    { id: 'a-exp2Company', target: '#experience .internship-layout:nth-child(2) .company', html: false },
+    { id: 'a-exp2Duration', target: '#experience .internship-layout:nth-child(2) .duration', html: false },
+    { id: 'a-exp3Title', target: '#experience .internship-layout:nth-child(3) h3', html: false },
+    { id: 'a-exp3Company', target: '#experience .internship-layout:nth-child(3) .company', html: false },
+    { id: 'a-exp3Duration', target: '#experience .internship-layout:nth-child(3) .duration', html: false },
+    // Projects
+    { id: 'a-proj1Title', target: '#projects .project-tile:nth-child(1) h3', html: false },
+    { id: 'a-proj1Desc', target: '#projects .project-tile:nth-child(1) p', html: false },
+    { id: 'a-proj2Title', target: '#projects .project-tile:nth-child(2) h3', html: false },
+    { id: 'a-proj2Desc', target: '#projects .project-tile:nth-child(2) p', html: false },
+    { id: 'a-proj3Title', target: '#projects .project-tile:nth-child(3) h3', html: false },
+    { id: 'a-proj3Desc', target: '#projects .project-tile:nth-child(3) p', html: false },
+    // Education
+    { id: 'a-edu1Inst', target: '#education .edu-tile:nth-child(1) h3', html: false },
+    { id: 'a-edu1Degree', target: '#education .edu-tile:nth-child(1) .edu-dept', html: false },
+    { id: 'a-edu1Years', target: '#education .edu-tile:nth-child(1) .edu-year', html: false },
+    { id: 'a-edu1Gpa', target: '#education .edu-tile:nth-child(1) .edu-meta span:nth-child(1)', html: false },
+    { id: 'a-edu2Inst', target: '#education .edu-tile:nth-child(2) h3', html: false },
+    { id: 'a-edu2Years', target: '#education .edu-tile:nth-child(2) .edu-year', html: false },
+    { id: 'a-edu2Gpa', target: '#education .edu-tile:nth-child(2) .edu-meta span:nth-child(1)', html: false },
+    { id: 'a-edu3Inst', target: '#education .edu-tile:nth-child(3) h3', html: false },
+    { id: 'a-edu3Years', target: '#education .edu-tile:nth-child(3) .edu-year', html: false },
+    { id: 'a-edu3Gpa', target: '#education .edu-tile:nth-child(3) .edu-meta span:nth-child(1)', html: false },
+    // Contact
+    { id: 'a-contactEmail', target: '#contact .contact-tile:nth-child(1) p', html: false },
+    { id: 'a-contactPhone', target: '#contact .contact-tile:nth-child(2) p', html: false },
+    { id: 'a-contactLinkedin', target: '#contact .contact-tile:nth-child(3) p', html: false },
+    { id: 'a-contactAvail', target: '#contact .panel-sub', html: false },
+  ];
+
+  textBindings.forEach(bind => {
+    const el = document.getElementById(bind.id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      const targets = document.querySelectorAll(bind.target);
+      targets.forEach(t => {
+        if (bind.attr) {
+          t.setAttribute(bind.attr, el.value);
+        } else if (bind.style) {
+          t.style[bind.style] = el.value + (bind.unit || '');
+        } else if (bind.html === false) {
+          t.textContent = el.value;
+        } else {
+          t.innerHTML = el.value;
+        }
+      });
+    });
+  });
+
+  // ===== TOGGLE SECTIONS =====
+  document.querySelectorAll('#adminSectionList .toggle-switch').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('active');
+      const sectionId = toggle.dataset.section;
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.style.display = toggle.classList.contains('active') ? '' : 'none';
+      }
+    });
+  });
+
+  // ===== DRAG & DROP SECTIONS =====
+  const adminSectionList = document.getElementById('adminSectionList');
+  let dragged = null;
+  if (adminSectionList) {
+    adminSectionList.querySelectorAll('.drag-item').forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        dragged = item;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        dragged = null;
+      });
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (!dragged || dragged === item) return;
+        const rect = item.getBoundingClientRect();
+        const mid = rect.top + rect.height / 2;
+        if (e.clientY < mid) {
+          adminSectionList.insertBefore(dragged, item);
+        } else {
+          adminSectionList.insertBefore(dragged, item.nextSibling);
+        }
+      });
+    });
+  }
+
+  // ===== SAVE / EXPORT =====
+  function showToast(msg) {
+    if (!adminToast) return;
+    adminToast.textContent = msg;
+    adminToast.classList.add('show');
+    setTimeout(() => adminToast.classList.remove('show'), 2000);
+  }
+
+  function gatherConfig() {
+    const config = { version: '1.0', exportedAt: new Date().toISOString() };
+    // Gather all admin input values
+    document.querySelectorAll('.admin-editor input, .admin-editor textarea').forEach(el => {
+      if (el.id) config[el.id] = el.value;
+    });
+    // Gather section visibility
+    config.sections = [];
+    document.querySelectorAll('#adminSectionList .drag-item').forEach(item => {
+      const toggle = item.querySelector('.toggle-switch');
+      config.sections.push({
+        id: item.dataset.section,
+        visible: toggle ? toggle.classList.contains('active') : true
+      });
+    });
+    return config;
+  }
+
+  
+  // ===== GITHUB SYNC =====
+  // Set these in the admin panel or hardcode them
+  let GITHUB_OWNER = '';
+  let GITHUB_REPO = '';
+  let GITHUB_TOKEN = '';
+  let USE_PROXY = false;
+  let PROXY_URL = '';
+
+  
+  // Auto-detect Vercel deployment URL
+  function detectProxyUrl() {
+    const hostname = window.location.hostname;
+    // If on Vercel, the API is at the same domain
+    if (hostname.includes('vercel.app') || hostname.includes('now.sh')) {
+      return window.location.origin + '/api/update';
+    }
+    // If on custom domain pointing to Vercel
+    // Check if /api/update exists by trying a HEAD request
+    return '';
+  }
+
+  // Try to auto-fill proxy URL on first load
+  (async function() {
+    const saved = JSON.parse(localStorage.getItem('githubConfig') || '{}');
+    if (!saved.proxyUrl) {
+      const autoUrl = detectProxyUrl();
+      if (autoUrl) {
+        PROXY_URL = autoUrl;
+        // Will be saved when user clicks Save Credentials
+      }
+    }
+  })();
+
+// Load saved credentials from localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem('githubConfig') || '{}');
+    GITHUB_OWNER = saved.owner || '';
+    GITHUB_REPO = saved.repo || '';
+    GITHUB_TOKEN = saved.token || '';
+    USE_PROXY = saved.useProxy || false;
+    PROXY_URL = saved.proxyUrl || '';
+  } catch(e) {}
+
+  // GitHub Settings UI in admin panel
+  function injectGitHubSettings() {
+    const editorBody = document.querySelector('.admin-editor-body');
+    if (!editorBody || editorBody.querySelector('.github-settings')) return;
+
+    const settingsHTML = `<div class="section-card github-settings" style="margin-bottom:1rem;background:linear-gradient(135deg,var(--mint-tile),var(--sky-tile));">
+      <div class="section-card-header"><h4>🚀 GitHub Auto-Sync</h4></div>
+      <div class="form-group"><label>GitHub Username / Org</label><input type="text" id="gh-owner" value="${GITHUB_OWNER}" placeholder="e.g. palashmia"></div>
+      <div class="form-group"><label>Repository Name</label><input type="text" id="gh-repo" value="${GITHUB_REPO}" placeholder="e.g. portfolio"></div>
+      <div class="form-group"><label>Personal Access Token</label><input type="password" id="gh-token" value="${GITHUB_TOKEN}" placeholder="ghp_xxxxxxxxxxxx"></div>
+      <div class="form-group"><label><input type="checkbox" id="gh-use-proxy" ${USE_PROXY ? 'checked' : ''}> Use Cloudflare Proxy (recommended)</label></div>
+      <div class="form-group"><label>Proxy Worker URL</label><input type="text" id="gh-proxy-url" value="${PROXY_URL || detectProxyUrl()}" placeholder="https://your-worker.workers.dev"></div>
+      <button class="btn btn-primary btn-sm" id="gh-save-creds" style="width:100%;margin-top:0.5rem;">💾 Save Credentials</button>
+      <p style="font-size:0.7rem;color:var(--ink-muted);margin-top:0.5rem;">Token is saved locally in your browser only. Never commit it to the repo.</p>
+    </div>`;
+
+    editorBody.insertAdjacentHTML('afterbegin', settingsHTML);
+
+    document.getElementById('gh-save-creds').addEventListener('click', () => {
+      GITHUB_OWNER = document.getElementById('gh-owner').value.trim();
+      GITHUB_REPO = document.getElementById('gh-repo').value.trim();
+      GITHUB_TOKEN = document.getElementById('gh-token').value.trim();
+      USE_PROXY = document.getElementById('gh-use-proxy').checked;
+      PROXY_URL = document.getElementById('gh-proxy-url').value.trim();
+      localStorage.setItem('githubConfig', JSON.stringify({
+        owner: GITHUB_OWNER, repo: GITHUB_REPO, token: GITHUB_TOKEN,
+        useProxy: USE_PROXY, proxyUrl: PROXY_URL
+      }));
+      showToast('GitHub credentials saved!');
+    });
+  }
+
+  // Call this when admin panel opens
+  const origEnterAdmin = enterAdmin;
+  enterAdmin = function() {
+    origEnterAdmin();
+    setTimeout(injectGitHubSettings, 100);
+  };
+
+  async function pushToGitHub(config) {
+    if (!GITHUB_OWNER || !GITHUB_REPO || !GITHUB_TOKEN) {
+      showToast('⚠️ Please set GitHub credentials in the GitHub Auto-Sync section above');
+      return false;
+    }
+
+    const configJson = JSON.stringify(config, null, 2);
+
+    if (USE_PROXY && PROXY_URL) {
+      // Use Cloudflare Worker proxy (secure - token hidden)
+      try {
+        const res = await fetch(PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ config: configJson })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Pushed to GitHub! Site will update in ~1 minute.');
+          return true;
+        } else {
+          showToast('❌ Proxy error: ' + (data.error || 'Unknown'));
+          return false;
+        }
+      } catch (err) {
+        showToast('❌ Network error: ' + err.message);
+        return false;
+      }
+    } else {
+      // Direct GitHub API call (token exposed in browser - NOT recommended)
+      try {
+        const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            event_type: 'portfolio-update',
+            client_payload: { config: configJson }
+          })
+        });
+        if (res.status === 204) {
+          showToast('✅ Pushed to GitHub! Site will update in ~1 minute.');
+          return true;
+        } else {
+          const err = await res.text();
+          showToast('❌ GitHub error ' + res.status + ': ' + err);
+          return false;
+        }
+      } catch (err) {
+        showToast('❌ Network error: ' + err.message);
+        return false;
+      }
+    }
+  }
+
+  // Replace Save button behavior
+  adminSaveBtn.addEventListener('click', async () => {
+    const config = gatherConfig();
+    localStorage.setItem('portfolioConfig', JSON.stringify(config));
+    const pushed = await pushToGitHub(config);
+    if (!pushed) {
+      showToast('Changes saved locally. GitHub sync failed — check credentials above.');
+    }
+  });
+
+  // Keep Export as JSON download (fallback)
+  adminExportBtn.addEventListener('click', () => {
+    const config = gatherConfig();
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'portfolio-config.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Config exported to file!');
+  });
+// ===== LOAD SAVED CONFIG =====
+  function loadConfig() {
+    const saved = localStorage.getItem('portfolioConfig');
+    if (!saved) return;
+    try {
+      const config = JSON.parse(saved);
+      Object.keys(config).forEach(key => {
+        const el = document.getElementById(key);
+        if (el && typeof config[key] === 'string') {
+          el.value = config[key];
+          // Trigger input event to apply to portfolio
+          el.dispatchEvent(new Event('input'));
+        }
+      });
+      // Restore section visibility
+      if (config.sections) {
+        config.sections.forEach(sec => {
+          const item = document.querySelector('#adminSectionList .drag-item[data-section="' + sec.id + '"]');
+          const toggle = item?.querySelector('.toggle-switch');
+          const section = document.getElementById(sec.id);
+          if (toggle && !sec.visible) {
+            toggle.classList.remove('active');
+            if (section) section.style.display = 'none';
+          }
+        });
+      }
+    } catch (e) { console.error('Failed to load config', e); }
+  }
+
+  // Load on startup
+  loadConfig();
+
+  // ===== KEYBOARD SHORTCUT =====
+  document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + Shift + A to open admin
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      showGate();
+    }
+    // Escape to close editor
+    if (e.key === 'Escape' && isAdmin) {
+      adminEditor.classList.remove('active');
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
