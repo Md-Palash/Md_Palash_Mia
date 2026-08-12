@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1180"/>
+  <script>if (window.screen.width < 700) { document.documentElement.classList.add('is-mobile-device'); }</script>
+  <title>Md Palash Mia | Textile Engineer</title>
+  <meta name="description" content="Md Palash Mia — Textile Engineer specializing in Yarn Engineering. Portfolio featuring education, skills, internship experience, and academic projects." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <style>
+    /* ----- DESIGN TOKENS ----- */
+    :root {
+      --bg: #F3F1FA;
+      --card: #FFFFFF;
+      --ink: #171325;
+      --ink-soft: #2E2B3B;
+      --ink-muted: #4A4758;
+      --border: rgba(23,19,37,0.09);
+      --sidebar-bg: #14121C;
+      --sidebar-text: #B9B5CC;
+      --sidebar-active-bg: #FFFFFF;
+      --sidebar-active-text: #14121C;
+      --primary: #2D3B66;
+      --primary-light: #4A5B8C;
+      --primary-tile: #E8EDF5;
+      --mint: #22B08D;
+      --mint-tile: #E2F6EF;
+      --coral: #E86850;
+      --coral-tile: #FFEBE3;
+      --gold: #D4A02B;
+      --gold-tile: #FEF3C7;
+      --rose: #D4536A;
+      --rose-tile: #FFE4E6;
+      --sky: #3B82F6;
+      --sky-tile: #DBEAFE;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Libre Caslon Text', 'Georgia', serif;
+      --font-mono: 'Manrope', monospace;
+      --r-lg: 28px;
+      --r-md: 18px;
+      --r-sm: 10px;
+      --shadow-card: 0 2px 8px rgba(23,19,37,0.04), 0 16px 40px rgba(23,19,37,0.06);
+      --shadow-card-hover: 0 8px 20px rgba(23,19,37,0.06), 0 26px 60px rgba(23,19,37,0.1);
+      --gutter: clamp(1.1rem, 3vw, 2rem);
+      --ease: cubic-bezier(.22,1,.36,1);
+      --ease-soft: cubic-bezier(.16,.84,.44,1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    @media (hover: hover) {
+      .tile, .value-tile, .edu-tile, .internship-side, .featured-project-side, .resume-preview-tile, .contact-tile, .skill-chip-card, .swatch-chip {
+        will-change: transform;
+      }
+    }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+    .sidebar-nav a:focus-visible { outline-color: #fff; }
+    .placeholder-note {
+      position: fixed; left: 50%; bottom: 2rem; transform: translateX(-50%) translateY(20px);
+      background: var(--ink); color: #fff; padding: 0.75rem 1.2rem; border-radius: 999px;
+      font-family: var(--font-mono); font-size: 0.82rem; font-weight: 600;
+      box-shadow: var(--shadow-card-hover); z-index: 300; opacity: 0; pointer-events: none;
+      transition: opacity .3s var(--ease), transform .3s var(--ease);
+    }
+    .placeholder-note.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .app-shell { display: flex; min-height: 100vh; position: relative; }
+    .ambient-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+    .blob-1 { width: 520px; height: 520px; top: -140px; left: 18%; background: radial-gradient(circle, var(--primary-light), transparent 70%); }
+    .blob-2 { width: 460px; height: 460px; bottom: -120px; right: 6%; background: radial-gradient(circle, var(--mint), transparent 70%); }
+    .blob-3 { width: 380px; height: 380px; top: 38%; right: 28%; background: radial-gradient(circle, var(--coral), transparent 70%); opacity: 0.30; }
+    @media (max-width:700px) {
+      .ambient-blob { filter: blur(46px); }
+      .blob-1 { width: 300px; height: 300px; }
+      .blob-2 { width: 260px; height: 260px; }
+      .blob-3 { display: none; }
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 270px;
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 1.6rem 1.3rem;
+      z-index: 50;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .sidebar-top { padding: 0.4rem 0.5rem 1.6rem; position: relative; z-index: 1; }
+    .logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
+      color: #fff;
+    }
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: visible;
+      border: 2px solid rgba(255,255,255,0.2);
+      flex-shrink: 0;
+      position: relative;
+    }
+    .logo-mark img { border-radius: 50%; overflow: hidden; width: 100%; height: 100%; object-fit: cover; }
+    .logo-status-dot {
+      position: absolute; bottom: -1px; right: -1px;
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--mint); border: 2px solid var(--sidebar-bg);
+    }
+    .logo-status-dot::after {
+      content: ''; position: absolute; inset: -5px; border-radius: 50%;
+      border: 1.5px solid var(--mint); opacity: 0;
+      animation: dotPulse 2.4s ease-out infinite;
+    }
+    @keyframes dotPulse { 0% { opacity: .55; transform: scale(.6); } 100% { opacity: 0; transform: scale(1.7); } }
+    .sidebar-glow {
+      position: absolute; top: -60px; left: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, var(--mint) 0%, transparent 70%);
+      opacity: 0.16; filter: blur(60px); pointer-events: none;
+      animation: sidebarDrift 18s ease-in-out infinite alternate;
+    }
+    @keyframes sidebarDrift { 0% { transform: translate(0,0); } 100% { transform: translate(50px,140px); } }
+    @media (max-width:960px), (prefers-reduced-motion: reduce) { .sidebar-glow { animation: none; } }
+    .is-mobile-device .sidebar-glow { animation: none; }
+    .sidebar-nav { position: relative; flex: 1; }
+    .nav-indicator {
+      position: absolute; left: 0; right: 0; top: 0;
+      height: 44px; background: var(--sidebar-active-bg);
+      border-radius: var(--r-sm); transition: transform .38s var(--ease-soft), height .38s var(--ease-soft);
+      z-index: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
+    .sidebar-nav ul { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 0.15rem; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 0.85rem;
+      height: 44px; padding-inline: 0.9rem;
+      border-radius: var(--r-sm);
+      font-size: 0.92rem; font-weight: 500;
+      color: var(--sidebar-text);
+      transition: color .25s var(--ease);
+      position: relative;
+      font-family: var(--font-mono);
+    }
+    .sidebar-nav a:hover { color: #fff; }
+    .sidebar-nav a.active { color: var(--sidebar-active-text); font-weight: 600; }
+    .sidebar-nav a svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; flex-shrink: 0; }
+    .sidebar-promo {
+      margin-top: 1.4rem;
+      background: linear-gradient(160deg, var(--primary), #1E2D4A);
+      border-radius: var(--r-md);
+      padding: 1.3rem;
+      color: #fff;
+    }
+    .sidebar-promo .promo-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; margin-bottom: 0.8rem; }
+    .sidebar-promo .promo-icon svg { width: 19px; height: 19px; stroke: #fff; }
+    .sidebar-promo h4 { font-size: 0.95rem; font-weight: 600; font-family: var(--font-body); }
+    .sidebar-promo p { font-size: 0.8rem; color: rgba(255,255,255,0.75); margin-top: 0.35rem; line-height: 1.5; }
+    .sidebar-promo .btn { margin-top: 0.9rem; width: 100%; }
+    /* Desktop & tablet: sidebar stays permanently visible, as before. */
+    /* Mobile only (<=960px) or a detected mobile device: sidebar becomes a hamburger-driven drawer. */
+    .sidebar-toggle {
+      display: none;
+      position: fixed; top: 1.1rem; left: 1.1rem; z-index: 60;
+      width: 50px; height: 50px; border-radius: 14px;
+      background: var(--sidebar-bg);
+      align-items: center; justify-content: center;
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor: pointer;
+      transition: left .4s var(--ease-soft), transform .3s var(--ease), box-shadow .3s var(--ease), background .3s var(--ease);
+    }
+    .sidebar-toggle:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
+    .sidebar-toggle:active { transform: translateY(0) scale(0.94); }
+    .sidebar-toggle .hb {
+      position: relative; width: 20px; height: 14px;
+    }
+    .sidebar-toggle .hb span {
+      position: absolute; left: 0; width: 100%; height: 1.8px; border-radius: 2px;
+      background: #fff;
+      transition: transform .38s var(--ease-soft), opacity .25s var(--ease), top .38s var(--ease-soft), width .3s var(--ease);
+    }
+    .sidebar-toggle .hb span:nth-child(1) { top: 0; }
+    .sidebar-toggle .hb span:nth-child(2) { top: 6px; width: 72%; }
+    .sidebar-toggle .hb span:nth-child(3) { top: 12px; }
+    .sidebar-toggle:hover .hb span:nth-child(2) { width: 100%; }
+    .sidebar-toggle.open .hb span:nth-child(1) { top: 6px; transform: rotate(45deg); }
+    .sidebar-toggle.open .hb span:nth-child(2) { opacity: 0; transform: translateX(-6px); }
+    .sidebar-toggle.open .hb span:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0; background: transparent;
+      z-index: 45; opacity: 0; pointer-events: none;
+    }
+    .sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
+
+    @media (max-width:960px) {
+      .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform .4s var(--ease-soft); box-shadow: var(--shadow-card-hover); }
+      .sidebar.open { transform: none; }
+      .sidebar-toggle { display: flex; }
+      .sidebar-toggle.open { left: 280px; }
+      .sidebar-overlay { display: block; }
+      body.nav-open { overflow: hidden; }
+      .content { transition: margin-left .4s var(--ease-soft); }
+      body.nav-open .content { margin-left: 270px; }
+    }
+    .is-mobile-device .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); transition: transform .4s var(--ease-soft); box-shadow: var(--shadow-card-hover); }
+    .is-mobile-device .sidebar.open { transform: none; }
+    .is-mobile-device .sidebar-toggle { display: flex; width: 130px; height: 130px; border-radius: 30px; }
+    .is-mobile-device .sidebar-toggle.open { left: 280px; }
+    .is-mobile-device .sidebar-toggle .hb { width: 54px; height: 40px; }
+    .is-mobile-device .sidebar-toggle .hb span { height: 5px; }
+    .is-mobile-device .sidebar-toggle .hb span:nth-child(1) { top: 0; }
+    .is-mobile-device .sidebar-toggle .hb span:nth-child(2) { top: 17px; }
+    .is-mobile-device .sidebar-toggle .hb span:nth-child(3) { top: 34px; }
+    .is-mobile-device .sidebar-toggle.open .hb span:nth-child(1) { top: 17px; }
+    .is-mobile-device .sidebar-toggle.open .hb span:nth-child(3) { top: 17px; }
+    .is-mobile-device .sidebar-overlay { display: block; }
+    .is-mobile-device body.nav-open { overflow: hidden; }
+    .is-mobile-device .content { transition: margin-left .4s var(--ease-soft); }
+    .is-mobile-device body.nav-open .content { margin-left: 270px; }
+
+    /* CONTENT */
+    .content {
+      flex: 1; position: relative; z-index: 1;
+      margin-left: 270px;
+      padding: clamp(1.4rem,4vw,2.6rem) clamp(1.2rem,4vw,3rem) 3rem;
+      display: flex; flex-direction: column; gap: clamp(1.2rem,3vw,1.6rem);
+      max-width: 1180px;
+    }
+    @media (max-width:960px) { .content { margin-left: 0; padding-top: clamp(4.8rem,7vw,5.6rem); } }
+    .is-mobile-device .content { margin-left: 0; padding-top: clamp(4.8rem,7vw,5.6rem); }
+    .panel {
+      background: var(--card);
+      border-radius: var(--r-lg);
+      padding: clamp(1.8rem,4vw,2.8rem);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.8rem; flex-wrap: wrap; }
+    .panel-head h2 { font-size: clamp(2rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; color: var(--ink); }
+    .panel-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-mono); font-weight: 700; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 0.4rem;
+    }
+    .panel-eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+    .panel-sub { color: var(--ink-soft); font-size: 1rem; max-width: 52ch; font-weight: 500; }
+    .btn {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      font-weight: 600; font-size: 0.9rem;
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      overflow: hidden;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      will-change: transform;
+      font-family: var(--font-mono);
+    }
+    .btn-primary { background: var(--ink); color: #fff; }
+    .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 14px 32px rgba(23,19,37,0.25); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px) scale(1.02); }
+    .btn-sm { padding: 0.55rem 1.15rem; font-size: 0.8rem; }
+    @media (max-width:640px) { .btn-sm { padding: 0.75rem 1.2rem; } }
+    .btn-light { background: #fff; color: var(--primary); font-weight: 700; }
+    .btn-light:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 28px rgba(0,0,0,0.15); }
+
+    .scroll-progress-track { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200; background: transparent; }
+    .scroll-progress { height: 100%; width: 100%; transform: scaleX(0); transform-origin: left center; background: linear-gradient(90deg, var(--primary), var(--mint)); will-change: transform; }
+    .back-to-top {
+      position: fixed; right: clamp(1rem,3vw,2rem); bottom: clamp(1rem,3vw,2rem);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--ink); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 150; opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none;
+      transition: opacity .3s var(--ease), transform .3s var(--ease);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .back-to-top.visible { opacity: 1; transform: none; pointer-events: auto; }
+    .back-to-top svg { width: 18px; height: 18px; stroke: #fff; }
+
+    /* HERO */
+    .hero-panel { padding: clamp(1.8rem,4vw,2.6rem); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; font-weight: 700; padding: 0.5rem 0.95rem;
+      border-radius: 999px; font-family: var(--font-mono);
+    }
+    .status-pill.mint { background: var(--mint-tile); color: var(--mint); }
+    .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    .hero-stage { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(2rem,5vw,3.4rem); align-items: start; margin-top: 1.6rem; }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: clamp(2.6rem, 5.6vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 1.3rem;
+    }
+    .hero-headline .line { display: block; overflow: hidden; }
+    .hero-headline .line span { display: inline-block; }
+    .hero-name-stitch { position: relative; }
+    .hero-name-stitch .stitch-underline {
+      display: block; width: min(280px, 70%); height: 18px; margin-top: 2px;
+    }
+    .stitch-path {
+      fill: none; stroke: var(--coral); stroke-width: 2.5; stroke-linecap: round;
+      stroke-dasharray: 7 7;
+    }
+    .hero-intro { margin-top: 1.2rem; color: var(--ink-soft); max-width: 50ch; font-size: 1.02rem; font-weight: 400; line-height: 1.85; }
+
+    /* Tailor's tape measure — doubles as the stat strip */
+    .tape-measure {
+      position: relative;
+      margin-top: 2.1rem;
+      padding: 1.6rem 0.4rem 0.5rem;
+    }
+    .tape-ruler { display: block; width: 100%; height: 34px; overflow: visible; }
+    .tape-ruler .tape-bg { fill: var(--bg); }
+    .tape-ruler .tape-tick { stroke: var(--ink-muted); stroke-width: 1; opacity: 0.55; }
+    .tape-ruler .tape-tick.major { opacity: 0.85; stroke-width: 1.3; }
+    .tape-ruler .tape-num { font-family: var(--font-mono); font-size: 8px; fill: var(--ink-muted); font-weight: 600; }
+    .tape-pins { position: relative; width: 100%; margin-top: -6px; min-height: 96px; }
+    .tape-pin {
+      position: absolute; top: 0; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      min-width: 104px;
+    }
+    .tape-pin .pin-flag {
+      width: 2px; height: 22px; background: var(--primary); margin: 0 auto;
+    }
+    .tape-pin.mint .pin-flag { background: var(--mint); }
+    .tape-pin.coral .pin-flag { background: var(--coral); }
+    .tape-pin .pin-card {
+      margin-top: -2px; background: var(--primary-tile); border-radius: var(--r-sm);
+      padding: 0.55rem 0.8rem; box-shadow: var(--shadow-card);
+    }
+    .tape-pin.mint .pin-card { background: var(--mint-tile); }
+    .tape-pin.coral .pin-card { background: var(--coral-tile); }
+    .pin-value { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--ink); line-height: 1.15; }
+    .pin-label { display: block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 0.1rem; }
+
+    /* Fabric-swatch chips */
+    .swatch-row { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 2.4rem; }
+    .swatch-chip {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 0.5rem 0.9rem 0.5rem 0.6rem; border-radius: var(--r-sm);
+      font-family: var(--font-mono); font-size: 0.76rem; font-weight: 600; color: var(--ink-soft);
+      box-shadow: var(--shadow-card);
+    }
+    .swatch-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
+
+    /* Garment swing-tag portrait card */
+    .hero-right { display: flex; justify-content: center; }
+    .garment-tag {
+      position: relative;
+      width: min(100%, 300px);
+      background: var(--card);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-card);
+      padding: 2.1rem 1.3rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .tag-loop {
+      position: absolute; top: -19px; left: 50%; transform: translateX(-50%);
+      width: 46px; height: 30px;
+    }
+    .tag-punch {
+      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--bg); box-shadow: inset 0 1px 3px rgba(23,19,37,0.18);
+    }
+    .tag-photo {
+      width: 100%; aspect-ratio: 4/5; border-radius: var(--r-sm);
+      overflow: hidden; background: linear-gradient(160deg, var(--mint-tile), var(--primary-tile));
+      margin-top: 0.6rem;
+    }
+    .tag-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tag-info { width: 100%; text-align: center; margin-top: 1.1rem; }
+    .tag-eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+    .tag-info h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-top: 0.35rem; }
+    .tag-role { font-size: 0.85rem; color: var(--ink-soft); font-weight: 500; margin-top: 0.25rem; }
+    .tag-divider {
+      width: 100%; height: 0; margin: 0.95rem 0;
+      border-top: 1.5px dashed var(--border);
+    }
+    .tag-origin { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; color: var(--ink-muted); letter-spacing: 0.02em; }
+    .tag-contact-link {
+      display: inline-block; margin-top: 0.9rem;
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+      color: var(--primary); border-bottom: 1px solid var(--primary);
+      padding-bottom: 1px; transition: opacity 0.25s var(--ease);
+    }
+    .tag-contact-link:hover { opacity: 0.7; }
+
+    @media (max-width:900px) {
+      .hero-stage { grid-template-columns: 1fr; }
+      .hero-right { order: -1; }
+      .garment-tag { width: min(100%, 260px); }
+    }
+    @media (max-width:560px) {
+      .tape-measure { display: none; }
+      .tape-pins-fallback { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.8rem; }
+    }
+    @media (min-width:561px) { .tape-pins-fallback { display: none; } }
+    .fallback-stat {
+      background: var(--primary-tile); border-radius: var(--r-sm); padding: 0.65rem 1rem;
+      display: flex; flex-direction: column; min-width: 96px;
+    }
+    .fallback-stat.mint { background: var(--mint-tile); }
+    .fallback-stat.coral { background: var(--coral-tile); }
+    .tile {
+      border-radius: var(--r-md);
+      padding: 1.3rem 1.4rem;
+      background: var(--primary-tile);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .tile.mint { background: var(--mint-tile); }
+    .tile.coral { background: var(--coral-tile); }
+    .tile-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,0.7);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.2rem;
+      flex-shrink: 0;
+    }
+    .tile-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.8; }
+    .tile-label { font-size: 0.76rem; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tile-value { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
+    .tile-value small { font-size: 0.8rem; font-weight: 400; color: var(--ink-muted); }
+    .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.6rem,4vw,2.6rem); }
+    .about-text p { color: var(--ink-soft); font-weight: 400; line-height: 1.8; }
+    .about-text p + p { margin-top: 1rem; }
+    .values-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0.9rem; }
+    .value-tile { 
+      border-radius: var(--r-md); 
+      padding: 1.2rem 1rem; 
+      background: var(--primary-tile); 
+      text-align: center;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    .value-tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .value-tile.mint { background: var(--mint-tile); }
+    .value-tile.coral { background: var(--coral-tile); }
+    .value-tile.gold { background: var(--gold-tile); }
+    .value-tile.rose { background: var(--rose-tile); }
+    .value-tile.sky { background: var(--sky-tile); }
+    .value-tile .tile-icon { 
+      width: 44px; height: 44px; border-radius: 50%; 
+      background: rgba(255,255,255,0.7); 
+      display: flex; align-items: center; justify-content: center; 
+      margin: 0 auto 0.4rem; 
+    }
+    .value-tile .tile-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.8; }
+    .value-tile.mint .tile-icon svg { stroke: var(--mint); }
+    .value-tile.coral .tile-icon svg { stroke: var(--coral); }
+    .value-tile.gold .tile-icon svg { stroke: var(--gold); }
+    .value-tile.rose .tile-icon svg { stroke: var(--rose); }
+    .value-tile.sky .tile-icon svg { stroke: var(--sky); }
+    .value-tile .value-stat { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
+    .value-tile .value-label { font-size: 0.75rem; color: var(--ink-muted); font-weight: 500; line-height: 1.35; margin-top: 0.2rem; }
+    .value-tile .value-sub { font-size: 0.65rem; color: var(--ink-muted); font-weight: 400; line-height: 1.35; margin-top: 0.1rem; }
+    @media (max-width:860px) { 
+      .about-grid { grid-template-columns: 1fr; } 
+      .values-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width:560px) { .values-grid { grid-template-columns: 1fr; } .value-tile { min-height: auto; padding: 1.1rem 1.3rem; } }
+
+    /* Education */
+    .edu-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .edu-tile {
+      display: flex; gap: 1.1rem;
+      background: var(--primary-tile);
+      border-radius: var(--r-md);
+      padding: 1.3rem 1.5rem;
+      align-items: flex-start;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    .edu-tile:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .edu-tile.mint { background: var(--mint-tile); }
+    .edu-tile.coral { background: var(--coral-tile); }
+    .edu-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .edu-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
+    .edu-year { font-family: var(--font-mono); font-weight: 600; font-size: 0.74rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .edu-tile h3 { font-size: 1.15rem; font-weight: 700; margin-top: 0.15rem; color: var(--ink); }
+    .edu-dept { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.15rem; font-weight: 500; }
+    .edu-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.7rem; font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-muted); }
+
+    /* Skills */
+    .skills-cols { display: flex; flex-direction: column; gap: 2.2rem; }
+    .skill-block h3 {
+      display: flex; align-items: center; justify-content: flex-start; gap: 0.6rem;
+      font-family: var(--font-mono); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--ink-muted); margin-bottom: 1.1rem;
+    }
+    .skill-block h3::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--block-accent, var(--primary)); flex-shrink: 0; }
+    .skill-block[data-color="primary"] { --block-accent: var(--primary); --block-tile: var(--primary-tile); }
+    .skill-block[data-color="mint"] { --block-accent: var(--mint); --block-tile: var(--mint-tile); }
+    .skill-block[data-color="coral"] { --block-accent: var(--coral); --block-tile: var(--coral-tile); }
+    .skill-chip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+    .skill-chip-card {
+      position: relative;
+      border-radius: var(--r-md);
+      padding: 1.7rem 1.5rem 1.4rem;
+      background: var(--card);
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.9rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      will-change: transform;
+    }
+    .skill-chip-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: var(--block-accent, var(--primary));
+    }
+    .skill-chip-card:hover { transform: translateY(-7px) scale(1.02); box-shadow: 0 18px 36px -8px rgba(23,19,37,0.18); }
+    .skill-chip-card:active { transform: translateY(-2px) scale(0.99); transition-duration: 0.15s; }
+    .skill-chip-icon {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--block-tile, var(--primary-tile));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.4s var(--ease-soft), background 0.4s var(--ease-soft), box-shadow 0.4s var(--ease-soft);
+    }
+    .skill-chip-icon svg { width: 22px; height: 22px; stroke: var(--block-accent, var(--primary)); fill: none; stroke-width: 1.7; transition: stroke 0.3s ease; }
+    .skill-chip-card:hover .skill-chip-icon { transform: scale(1.12) translateY(-3px); background: var(--block-accent, var(--primary)); box-shadow: 0 8px 18px -4px rgba(23,19,37,0.35); }
+    .skill-chip-card:hover .skill-chip-icon svg { stroke: #fff; }
+    .skill-chip-name { font-size: 1.02rem; font-weight: 700; color: var(--ink); line-height: 1.3; transition: color 0.3s ease; }
+    .skill-chip-card:hover .skill-chip-name { color: var(--block-accent, var(--primary)); }
+    .skill-chip-level { display: flex; gap: 4px; width: 100%; justify-content: center; }
+    .skill-chip-level span { flex: 1; height: 5px; border-radius: 3px; background: var(--border); transform: scaleX(0); transform-origin: left; }
+    .skill-chip-card[data-tier="core"] .skill-chip-level span { background: var(--block-accent, var(--primary)); }
+    .skill-chip-card[data-tier="proficient"] .skill-chip-level span:nth-child(-n+2) { background: var(--block-accent, var(--primary)); }
+    .skill-chip-tier {
+      font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--ink-muted);
+    }
+    @media (max-width:860px) { .skill-chip-grid { grid-template-columns: repeat(2, 1fr); gap: 1.3rem; } }
+    @media (max-width:480px) { .skill-chip-grid { grid-template-columns: 1fr; } }
+    #skills { padding-bottom: clamp(2.6rem,5vw,3.4rem); }
+
+    /* Experience */
+    .internship-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem; }
+    .internship-side { background: var(--primary-tile); border-radius: var(--r-md); padding: 1.4rem; height: fit-content; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+    .internship-side:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
+    .internship-side h3 { font-size: 1.15rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); }
+    .internship-side .company { color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-top: 0.4rem; }
+    .internship-side .duration { color: var(--ink-muted); font-family: var(--font-mono); font-weight: 600; font-size: 0.78rem; margin-top: 0.7rem; }
+    
+    .internship-block h4 { 
+      font-family: var(--font-display); 
+      font-size: 1.05rem; 
+      font-weight: 700; 
+      letter-spacing: 0.01em;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem; 
+    }
+    .internship-block p, .internship-block li { color: var(--ink-soft); font-size: 0.92rem; font-weight: 400; line-height: 1.8; }
+    .internship-block ul { display: flex; flex-direction: column; gap: 0.45rem; }
+    .internship-block li::before { content: '— '; color: var(--primary); }
+    .tech-chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.3rem; }
+    .tech-chip { font-family: var(--font-mono); font-size: 0.72rem; background: var(--primary-tile); color: var(--primary); padding: 0.32rem 0.75rem; border-radius: 999px; font-weight: 600; }
+    .tech-chip.alt { background: var(--gold-tile); color: var(--gold); }
+    .tech-chip.alt2 { background: var(--rose-tile); color: var(--rose); }
+    @media (max-width:780px) { .internship-layout { grid-template-columns: 1fr; } }
+
+    /* Projects */
+    .featured-project { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    .featured-project-side { order: 2; background: var(--primary-tile); border-radius: var(--r-md); padding: 1.5rem; height: fit-content; display: flex; flex-direction: column; gap: 0.6rem; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+    .featured-project-body { order: 1; }
+    .featured-project-side:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+    .project-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .project-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
+    .featured-project-side h3 { font-size: 1.3rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); margin-top: 0.1rem; }
+    .featured-project-body { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8; }
+    .featured-project-block { margin-top: 1.1rem; }
+    .featured-project-block .label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 700; margin-bottom: 0.3rem; }
+    .featured-project-block p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; }
+    .project-links { margin-top: 1.3rem; display: flex; gap: 0.5rem; }
+    @media (max-width:780px) { .featured-project { grid-template-columns: 1fr; } }
+
+    /* Certificates */
+    .edu-extra { margin-top: 1.6rem; padding-top: 1.3rem; border-top: 1px dashed var(--border); }
+    .edu-extra-label { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); font-weight: 700; margin-bottom: 0.6rem; }
+    .edu-extra-row { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border); }
+    .edu-extra-row:last-child { border-bottom: none; }
+    .edu-extra-row strong { color: var(--ink); font-weight: 600; }
+    .edu-extra-row .meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-muted); font-weight: 600; }
+
+    /* Experts Opinion */
+    .experts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+    }
+    .expert-card {
+      background: var(--bg);
+      border-radius: var(--r-md);
+      padding: 1.6rem 1.4rem;
+      text-align: center;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    .expert-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card-hover); }
+    .expert-card .expert-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 0.8rem;
+      border: 3px solid var(--primary-tile);
+      background: var(--primary-tile);
+    }
+    .expert-card .expert-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .expert-card .expert-title {
+      font-size: 0.78rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .expert-card .expert-quote {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    @media (max-width:860px) { .experts-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width:520px) { .experts-grid { grid-template-columns: 1fr; } }
+
+    /* Resume */
+    .resume-layout { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .resume-preview-tile { width: 120px; aspect-ratio: 3/4; background: var(--primary-tile); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.4s var(--ease); }
+    .resume-preview-tile:hover { transform: scale(1.02) rotate(-1deg); }
+    .resume-preview-tile svg { width: 36px; height: 36px; stroke: var(--primary); }
+    .resume-text h3 { font-size: 1.25rem; font-weight: 700; color: var(--ink); }
+    .resume-text p { color: var(--ink-soft); margin-top: 0.5rem; max-width: 46ch; font-weight: 400; line-height: 1.8; }
+    .resume-cta { margin-top: 1.1rem; }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(1.6rem,4vw,2.6rem); }
+    .contact-tiles { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-tile { display: flex; align-items: center; gap: 1rem; background: var(--bg); border-radius: var(--r-md); padding: 1.1rem 1.3rem; transition: transform 0.4s var(--ease), background 0.4s var(--ease); }
+    .contact-tile:hover { transform: translateX(4px) scale(1.01); background: var(--primary-tile); }
+    .contact-tile .icon-wrap { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-tile .icon-wrap svg { width: 18px; height: 18px; stroke: var(--primary); }
+    .contact-tile h4 { font-size: 0.8rem; color: var(--ink-muted); font-weight: 500; }
+    .contact-tile p { font-size: 0.94rem; font-weight: 600; margin-top: 0.1rem; font-family: var(--font-mono); color: var(--ink); }
+    .contact-form { background: var(--bg); border-radius: var(--r-md); padding: clamp(1.5rem,4vw,2rem); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); }
+    .form-group input, .form-group textarea { padding: 0.8rem 0.95rem; border: 1px solid var(--border); border-radius: var(--r-sm); background: #fff; font-weight: 500; width: 100%; font-family: var(--font-body); }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tile); }
+    .form-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.9rem; }
+    @media (max-width:860px) { .contact-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
+
+    .footer { text-align: center; padding: 1.6rem 0 0.6rem; color: var(--ink-muted); font-size: 0.83rem; font-weight: 500; }
+    .footer a:hover { color: var(--primary); }
+
+    @media (max-width:640px) { .panel { border-radius: 22px; } }
+    @media (max-width:480px) {
+      .hero-headline { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="scroll-progress-track"><div class="scroll-progress" id="scrollProgress"></div></div>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-glow" aria-hidden="true"></div>
+    <div class="sidebar-top">
+      <a href="#home" class="logo">
+        <span class="logo-mark"><img src="assets/profile.png" alt="Md Palash Mia" onerror="this.style.display='none'"><span class="logo-status-dot" aria-hidden="true"></span></span>
+        Md Palash Mia
+      </a>
+    </div>
+    <nav class="sidebar-nav" aria-label="Primary">
+      <div class="nav-indicator" id="navIndicator"></div>
+      <ul id="navLinks">
+        <li><a href="#home" data-nav class="active"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/></svg>Home</a></li>
+        <li><a href="#about" data-nav><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>About</a></li>
+        <li><a href="#experience" data-nav><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Experience</a></li>
+        <li><a href="#projects" data-nav><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>Projects</a></li>
+        <li><a href="#skills" data-nav><svg viewBox="0 0 24 24"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>Skills</a></li>
+        <li><a href="#education" data-nav><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>Education</a></li>
+        <li><a href="#experts" data-nav><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>Experts</a></li>
+        <li><a href="#resume" data-nav><svg viewBox="0 0 24 24"><path d="M7 2h7l5 5v15H7z"/><path d="M14 2v5h5M9 13h6M9 17h6"/></svg>Resume</a></li>
+        <li><a href="#contact" data-nav><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-promo">
+      <div class="promo-icon"><svg viewBox="0 0 24 24"><path d="M7 2h7l5 5v15H7z"/><path d="M14 2v5h5"/><path d="M12 11v6M9 14l3-3 3 3"/></svg></div>
+      <h4>Get My Resume</h4>
+      <p>Download a complete PDF overview.</p>
+      <a href="assets/resume.pdf" class="btn btn-light btn-sm" download>Download PDF</a>
+    </div>
+  </aside>
+
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation" aria-controls="sidebar" aria-expanded="false">
+    <span class="hb"><span></span><span></span><span></span></span>
+  </button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
+    <!-- HOME -->
+    <section id="home" class="panel hero-panel">
+      <div class="hero-stage">
+        <div class="hero-left">
+          <span class="status-pill mint"><span class="dot"></span>Open to Opportunities</span>
+          <h1 class="hero-headline">
+            <span class="line"><span>Hi, I'm</span></span>
+            <span class="line"><span>Md Palash</span></span>
+            <span class="line hero-name-stitch"><span>Mia</span>
+              <svg class="stitch-underline" viewBox="0 0 280 18" preserveAspectRatio="none" aria-hidden="true">
+                <path class="stitch-path" d="M2 9 Q 70 -4, 140 9 T 278 9"></path>
+              </svg>
+            </span>
+          </h1>
+          <p class="hero-intro">A motivated Textile Engineer from BUTEX, specializing in Yarn Engineering with hands-on experience in Central Costing, inter-department coordination between Supply Chain, CAD, and IE. Passionate about efficient production planning, cost control, and global buyer relations.</p>
+
+          <!-- Tailor's tape measure, doubling as the stat strip -->
+          <div class="tape-measure" aria-hidden="true">
+            <svg class="tape-ruler" viewBox="0 0 640 34" preserveAspectRatio="none">
+              <rect class="tape-bg" x="0" y="0" width="640" height="34" rx="6"></rect>
+              <g><line x1="4.0" y1="0" x2="4.0" y2="14" class="tape-tick major"></line><text x="4.0" y="26" text-anchor="middle" class="tape-num">0</text><line x1="14.5" y1="0" x2="14.5" y2="7" class="tape-tick"></line><line x1="25.1" y1="0" x2="25.1" y2="7" class="tape-tick"></line><line x1="35.6" y1="0" x2="35.6" y2="7" class="tape-tick"></line><line x1="46.1" y1="0" x2="46.1" y2="7" class="tape-tick"></line><line x1="56.7" y1="0" x2="56.7" y2="14" class="tape-tick major"></line><line x1="67.2" y1="0" x2="67.2" y2="7" class="tape-tick"></line><line x1="77.7" y1="0" x2="77.7" y2="7" class="tape-tick"></line><line x1="88.3" y1="0" x2="88.3" y2="7" class="tape-tick"></line><line x1="98.8" y1="0" x2="98.8" y2="7" class="tape-tick"></line><line x1="109.3" y1="0" x2="109.3" y2="14" class="tape-tick major"></line><text x="109.3" y="26" text-anchor="middle" class="tape-num">10</text><line x1="119.9" y1="0" x2="119.9" y2="7" class="tape-tick"></line><line x1="130.4" y1="0" x2="130.4" y2="7" class="tape-tick"></line><line x1="140.9" y1="0" x2="140.9" y2="7" class="tape-tick"></line><line x1="151.5" y1="0" x2="151.5" y2="7" class="tape-tick"></line><line x1="162.0" y1="0" x2="162.0" y2="14" class="tape-tick major"></line><line x1="172.5" y1="0" x2="172.5" y2="7" class="tape-tick"></line><line x1="183.1" y1="0" x2="183.1" y2="7" class="tape-tick"></line><line x1="193.6" y1="0" x2="193.6" y2="7" class="tape-tick"></line><line x1="204.1" y1="0" x2="204.1" y2="7" class="tape-tick"></line><line x1="214.7" y1="0" x2="214.7" y2="14" class="tape-tick major"></line><text x="214.7" y="26" text-anchor="middle" class="tape-num">20</text><line x1="225.2" y1="0" x2="225.2" y2="7" class="tape-tick"></line><line x1="235.7" y1="0" x2="235.7" y2="7" class="tape-tick"></line><line x1="246.3" y1="0" x2="246.3" y2="7" class="tape-tick"></line><line x1="256.8" y1="0" x2="256.8" y2="7" class="tape-tick"></line><line x1="267.3" y1="0" x2="267.3" y2="14" class="tape-tick major"></line><line x1="277.9" y1="0" x2="277.9" y2="7" class="tape-tick"></line><line x1="288.4" y1="0" x2="288.4" y2="7" class="tape-tick"></line><line x1="298.9" y1="0" x2="298.9" y2="7" class="tape-tick"></line><line x1="309.5" y1="0" x2="309.5" y2="7" class="tape-tick"></line><line x1="320.0" y1="0" x2="320.0" y2="14" class="tape-tick major"></line><text x="320.0" y="26" text-anchor="middle" class="tape-num">30</text><line x1="330.5" y1="0" x2="330.5" y2="7" class="tape-tick"></line><line x1="341.1" y1="0" x2="341.1" y2="7" class="tape-tick"></line><line x1="351.6" y1="0" x2="351.6" y2="7" class="tape-tick"></line><line x1="362.1" y1="0" x2="362.1" y2="7" class="tape-tick"></line><line x1="372.7" y1="0" x2="372.7" y2="14" class="tape-tick major"></line><line x1="383.2" y1="0" x2="383.2" y2="7" class="tape-tick"></line><line x1="393.7" y1="0" x2="393.7" y2="7" class="tape-tick"></line><line x1="404.3" y1="0" x2="404.3" y2="7" class="tape-tick"></line><line x1="414.8" y1="0" x2="414.8" y2="7" class="tape-tick"></line><line x1="425.3" y1="0" x2="425.3" y2="14" class="tape-tick major"></line><text x="425.3" y="26" text-anchor="middle" class="tape-num">40</text><line x1="435.9" y1="0" x2="435.9" y2="7" class="tape-tick"></line><line x1="446.4" y1="0" x2="446.4" y2="7" class="tape-tick"></line><line x1="456.9" y1="0" x2="456.9" y2="7" class="tape-tick"></line><line x1="467.5" y1="0" x2="467.5" y2="7" class="tape-tick"></line><line x1="478.0" y1="0" x2="478.0" y2="14" class="tape-tick major"></line><line x1="488.5" y1="0" x2="488.5" y2="7" class="tape-tick"></line><line x1="499.1" y1="0" x2="499.1" y2="7" class="tape-tick"></line><line x1="509.6" y1="0" x2="509.6" y2="7" class="tape-tick"></line><line x1="520.1" y1="0" x2="520.1" y2="7" class="tape-tick"></line><line x1="530.7" y1="0" x2="530.7" y2="14" class="tape-tick major"></line><text x="530.7" y="26" text-anchor="middle" class="tape-num">50</text><line x1="541.2" y1="0" x2="541.2" y2="7" class="tape-tick"></line><line x1="551.7" y1="0" x2="551.7" y2="7" class="tape-tick"></line><line x1="562.3" y1="0" x2="562.3" y2="7" class="tape-tick"></line><line x1="572.8" y1="0" x2="572.8" y2="7" class="tape-tick"></line><line x1="583.3" y1="0" x2="583.3" y2="14" class="tape-tick major"></line><line x1="593.9" y1="0" x2="593.9" y2="7" class="tape-tick"></line><line x1="604.4" y1="0" x2="604.4" y2="7" class="tape-tick"></line><line x1="614.9" y1="0" x2="614.9" y2="7" class="tape-tick"></line><line x1="625.5" y1="0" x2="625.5" y2="7" class="tape-tick"></line><line x1="636.0" y1="0" x2="636.0" y2="14" class="tape-tick major"></line><text x="636.0" y="26" text-anchor="middle" class="tape-num">60</text></g>
+            </svg>
+            <div class="tape-pins">
+              <div class="tape-pin" style="left:9%"><span class="pin-flag"></span><span class="pin-card"><span class="pin-value">3.42</span><span class="pin-label">CGPA</span></span></div>
+              <div class="tape-pin mint" style="left:50%"><span class="pin-flag"></span><span class="pin-card"><span class="pin-value">120–150</span><span class="pin-label">Cost Sheets / Mo</span></span></div>
+              <div class="tape-pin coral" style="left:89%"><span class="pin-flag"></span><span class="pin-card"><span class="pin-value">5</span><span class="pin-label">Global Buyers</span></span></div>
+            </div>
+          </div>
+          <div class="tape-pins-fallback">
+            <div class="fallback-stat"><span class="pin-value">3.42</span><span class="pin-label">CGPA</span></div>
+            <div class="fallback-stat mint"><span class="pin-value">120–150</span><span class="pin-label">Cost Sheets / Mo</span></div>
+            <div class="fallback-stat coral"><span class="pin-value">5</span><span class="pin-label">Global Buyers</span></div>
+          </div>
+
+          <!-- Fabric-swatch identity chips -->
+          <div class="swatch-row">
+            <span class="swatch-chip"><i class="swatch-dot" style="background:var(--primary)"></i>BUTEX '24</span>
+            <span class="swatch-chip"><i class="swatch-dot" style="background:var(--mint)"></i>Yarn Engineering</span>
+            <span class="swatch-chip"><i class="swatch-dot" style="background:var(--coral)"></i>Costing Specialist</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="garment-tag">
+            <svg class="tag-loop" viewBox="0 0 46 30" aria-hidden="true">
+              <path d="M23 28 C 10 28, 8 4, 23 4 C 38 4, 36 28, 23 28" fill="none" stroke="var(--ink-muted)" stroke-width="2" opacity="0.35"></path>
+            </svg>
+            <span class="tag-punch"></span>
+            <div class="tag-photo">
+              <img src="assets/profile.png" alt="Md Palash Mia" loading="lazy" decoding="async" onerror="this.style.display='none'">
+            </div>
+            <div class="tag-info">
+              <p class="tag-eyebrow">Style No. TE&#8209;2024</p>
+              <h3>Md Palash Mia</h3>
+              <p class="tag-role">Textile Engineer — Yarn Engineering</p>
+              <div class="tag-divider"></div>
+              <p class="tag-origin">Made in Bangladesh · Open to Relocate</p>
+              <a href="#contact" class="tag-contact-link">Get in touch →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT - Professional Background -->
+    <section id="about" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">About</span><h2>Professional Background</h2></div></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I am a recent Textile Engineering graduate from Bangladesh University of Textiles (BUTEX) with a specialization in Yarn Engineering and a CGPA of 3.42. My academic journey has equipped me with a strong foundation in textile manufacturing, yarn production processes, and quality assurance.</p>
+          <p>Professionally, I have gained practical experience as an Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, where I handle costing inquiries for international buyers including Decathlon, Haddad, Jack & Jones, and Malacca. I consistently prepare 120-150 cost sheets per month, driving significant efficiency improvements in the costing process.</p>
+          <p>I am passionate about building a career in textile merchandising, where I can leverage my technical knowledge and practical experience to support efficient production planning, cost control, and global buyer relations in a growth-oriented apparel organization.</p>
+        </div>
+        <div class="values-grid">
+          <div class="value-tile">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3" cy="6" r="1.5"/><circle cx="3" cy="12" r="1.5"/><circle cx="3" cy="18" r="1.5"/></svg></div>
+            <div class="value-stat">3 Teams</div>
+            <div class="value-label">Cross-Dept. Coordination</div>
+            <div class="value-sub">IE · CAD · Supply Chain</div>
+          </div>
+          <div class="value-tile mint">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+            <div class="value-stat">Asst. Merchandiser</div>
+            <div class="value-label">Central Costing</div>
+            <div class="value-sub">Snowtex · Apr 2026</div>
+          </div>
+          <div class="value-tile coral">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 13l4-4 4 4 4-6 6 6"/></svg></div>
+            <div class="value-stat">Tech Pack</div>
+            <div class="value-label">Sample Analysis</div>
+            <div class="value-sub">Costing accuracy at source</div>
+          </div>
+          <div class="value-tile gold">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></div>
+            <div class="value-stat">5+ Buyers</div>
+            <div class="value-label">Global Accounts</div>
+            <div class="value-sub">Decathlon · Haddad · J&J · Malacca</div>
+          </div>
+          <div class="value-tile rose">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+            <div class="value-stat">30%+</div>
+            <div class="value-label">Efficiency Boost</div>
+            <div class="value-sub">Systematic analysis</div>
+          </div>
+          <div class="value-tile sky">
+            <div class="tile-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+            <div class="value-stat">MTO</div>
+            <div class="value-label">Management Training</div>
+            <div class="value-sub">Snowtex · Sep 2025 – Apr 2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Experience</span><h2>Professional Experience</h2></div></div>
+      
+      <!-- Assistant Merchandiser - Present -->
+      <div class="internship-layout">
+        <div class="internship-side"><h3>Assistant Merchandiser - Central Costing</h3><div class="company">Snowtex Outerwear Limited</div><div class="duration">April 2026 – Present</div></div>
+        <div>
+          <div class="internship-block"><h4>Key Responsibilities</h4><ul><li>Handle costing inquiries for Decathlon, Haddad, Jack & Jones, Malacca</li><li>Prepare 120-150 cost sheets per month with consistent accuracy</li><li>Coordinate with IE, CAD, and Supply Chain departments</li><li>Analyze tech packs and samples for accurate costing</li></ul></div>
+          <div class="internship-block"><h4>Key Achievement</h4><p>Drove a 30%+ improvement in costing process efficiency through systematic analysis and inter-department coordination.</p></div>
+          <div class="internship-block"><h4>Buyers Handled</h4><div class="tech-chip-row"><span class="tech-chip">Decathlon</span><span class="tech-chip alt">Haddad</span><span class="tech-chip alt2">Jack & Jones</span><span class="tech-chip">Malacca</span></div></div>
+        </div>
+      </div>
+
+      <!-- MTO Period -->
+      <div class="internship-layout">
+        <div class="internship-side mint" style="background:var(--mint-tile);"><h3>Management Training Officer (MTO)</h3><div class="company" style="color:var(--mint);">Snowtex Outerwear Limited</div><div class="duration">September 2025 – April 2026</div></div>
+        <div>
+          <div class="internship-block"><h4>Training &amp; Development</h4><ul><li>Intensive training in Central Costing processes and merchandising operations</li><li>Learned end-to-end costing workflow: tech pack analysis, sample evaluation, and buyer communication</li><li>Collaborated with IE, CAD, and Supply Chain teams to understand inter-departmental coordination</li><li>Developed proficiency in preparing cost sheets and analyzing buyer requirements</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Acquired comprehensive knowledge of garment costing, buyer relations, and production planning. Built a strong foundation that enabled a smooth transition to the Assistant Merchandiser role.</p></div>
+        </div>
+      </div>
+
+      <!-- Motin Spinning Internship -->
+      <div class="internship-layout">
+        <div class="internship-side coral" style="background:var(--coral-tile);"><h3>Intern - Yarn Manufacturing</h3><div class="company" style="color:var(--coral);">Motin Spinning Mills Ltd. (DBL Group)</div><div class="duration">2 Months</div></div>
+        <div>
+          <div class="internship-block"><h4>Hands-on Training</h4><ul><li>Ring, vortex, and rotor spinning methods</li><li>Yarn quality testing - count, strength, evenness, imperfection</li><li>HVI and AFIS testing for fiber quality</li><li>Blowroom efficiency testing and calculation</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Gained practical understanding of yarn manufacturing processes and quality control parameters in a production environment.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Projects</span><h2>Academic &amp; Independent Projects</h2></div></div>
+      <div class="featured-project">
+        <div class="featured-project-side">
+          <div class="project-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 13l4-4 4 4 4-6 6 6"/></svg></div>
+          <span class="panel-eyebrow">Academic Thesis</span>
+          <h3>Ring vs Vortex Yarn</h3>
+          <div class="tech-chip-row"><span class="tech-chip">Ring Spinning</span><span class="tech-chip alt">Vortex Spinning</span><span class="tech-chip alt2">HVI</span><span class="tech-chip">AFIS</span></div>
+        </div>
+        <div class="featured-project-body">
+          <p>Compared properties of ring and vortex yarn made from viscose, recycled cotton and polyester. Blended recycled cotton, modal and recycled polyester (30:40:30) for 20&nbsp;Ne and 30&nbsp;Ne yarns.</p>
+          <div class="featured-project-block"><span class="label">Methodology</span><p>Evaluated tensile strength, elongation, CV%, imperfections, and hairiness using HVI &amp; AFIS.</p></div>
+          <div class="featured-project-block"><span class="label">Key Finding</span><p>Vortex yarns showed better evenness and fewer imperfections; ring yarns had higher strength.</p></div>
+          <div class="project-links"><a href="#" class="btn btn-outline btn-sm" data-placeholder-link>Report</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Skills</span><h2>Technical &amp; Professional Skills</h2></div></div>
+      <div class="skills-cols">
+        <div class="skill-block" data-color="primary">
+          <h3>Textile &amp; Merchandising</h3>
+          <div class="skill-chip-grid">
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7.5h8M7.5 11.5h.01M12 11.5h.01M16.5 11.5h.01M7.5 15.5h.01M12 15.5h.01M16.5 15.5h.01"/></svg></span><span class="skill-chip-name">Garment Costing</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6a1 1 0 011 1v1.3H8V4.2a1 1 0 011-1z"/><rect x="5" y="5.5" width="14" height="15.3" rx="2"/><path d="M9 11h6M9 14.5h6M9 18h3"/></svg></span><span class="skill-chip-name">Tech Pack Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="proficient"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></span><span class="skill-chip-name">Sample Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Proficient</span></div>
+            <div class="skill-chip-card" data-tier="proficient"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="7" rx="1"/><rect x="13" y="4" width="8" height="16" rx="1"/><rect x="3" y="13" width="8" height="7" rx="1"/></svg></span><span class="skill-chip-name">Marker Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Proficient</span></div>
+          </div>
+        </div>
+        <div class="skill-block" data-color="mint">
+          <h3>Yarn Manufacturing</h3>
+          <div class="skill-chip-grid">
+            <div class="skill-chip-card" data-tier="proficient"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg></span><span class="skill-chip-name">Ring Spinning</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Proficient</span></div>
+            <div class="skill-chip-card" data-tier="proficient"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.6"/><path d="M12 12V4M12 12l6.9 4M12 12l-6.9 4"/></svg></span><span class="skill-chip-name">Rotor Spinning</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Proficient</span></div>
+            <div class="skill-chip-card" data-tier="proficient"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1116 0 6 6 0 11-12 0 4 4 0 118 0 2 2 0 11-4 0"/></svg></span><span class="skill-chip-name">Vortex Spinning</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Proficient</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="skill-chip-name">Yarn Quality Testing</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+          </div>
+        </div>
+        <div class="skill-block" data-color="coral">
+          <h3>Software &amp; Tools</h3>
+          <div class="skill-chip-grid">
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.3h18M3 15h18M9.3 4v16M15 4v16"/></svg></span><span class="skill-chip-name">MS Excel / Sheets</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span class="skill-chip-name">MS Word / PowerPoint</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 01-.6-7.96A5 5 0 0116.9 8.2 4.5 4.5 0 0117.5 18H7z"/></svg></span><span class="skill-chip-name">Google Docs / Drive</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-8.5 8.5c-1.2 0-2.35-.25-3.4-.71L3 21l1.7-5.1A8.5 8.5 0 1121 11.5z"/></svg></span><span class="skill-chip-name">Business Communication</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Education</span><h2>Academic Background</h2></div></div>
+      <div class="edu-list">
+        <div class="edu-tile"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2019 - 2024</div><h3>Bangladesh University of Textiles (BUTEX)</h3><div class="edu-dept">B.Sc. in Textile Engineering — Yarn Engineering</div><div class="edu-meta"><span>CGPA: 3.42 / 4.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+        <div class="edu-tile mint"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#22B08D" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2016 - 2018</div><h3>Jatir Janak Bangabandhu Sheikh Mujibur Rahman Govt. College</h3><div class="edu-dept">H.S.C — Science</div><div class="edu-meta"><span>GPA: 5.00 / 5.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+        <div class="edu-tile coral"><div class="edu-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E86850" stroke-width="1.8"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div><div><div class="edu-year">2014 - 2016</div><h3>Bangamata Sheikh Fazillatunnessa Mujib Govt. Secondary School</h3><div class="edu-dept">S.S.C — Science</div><div class="edu-meta"><span>CGPA: 5.00 / 5.00</span><span>Dhaka, Bangladesh</span></div></div></div>
+      </div>
+      <div class="edu-extra">
+        <div class="edu-extra-label">Training &amp; Involvement</div>
+        <div class="edu-extra-row"><strong>Yarn Manufacturing Training</strong><span class="meta">Motin Spinning Mills Ltd. (DBL Group) · 2023</span></div>
+        <div class="edu-extra-row"><strong>BUTEX Spinners Club</strong><span class="meta">Active Member</span></div>
+      </div>
+    </section>
+
+    <!-- EXPERTS OPINION -->
+    <section id="experts" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Experts Opinion</span><h2>What Experts Say</h2></div></div>
+      <div class="experts-grid">
+        <div class="expert-card">
+          <img src="assets/expert1.jpg" alt="Expert 1" class="expert-photo" loading="lazy" decoding="async" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Dr. Md. Rezaul Karim</div>
+          <div class="expert-title">Professor, BUTEX</div>
+          <div class="expert-quote">"Palash is one of the most dedicated students I've taught. His thesis work on yarn properties was meticulous and showed great analytical depth."</div>
+        </div>
+        <div class="expert-card">
+          <img src="assets/expert2.jpg" alt="Expert 2" class="expert-photo" loading="lazy" decoding="async" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Ms. Nurun Nahar</div>
+          <div class="expert-title">Head of Costing, Snowtex</div>
+          <div class="expert-quote">"Palash's ability to handle 150+ cost sheets monthly with precision and his coordination skills have been invaluable to our team."</div>
+        </div>
+        <div class="expert-card">
+          <img src="assets/expert3.jpg" alt="Expert 3" class="expert-photo" loading="lazy" decoding="async" onerror="this.style.background='var(--primary-tile)'">
+          <div class="expert-name">Engr. Sajjad Hossain</div>
+          <div class="expert-title">Plant Manager, DBL Group</div>
+          <div class="expert-quote">"During his internship, Palash showed exceptional understanding of spinning processes and quality control. He's a quick learner with a bright future."</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Resume</span><h2>Download My Resume</h2></div></div>
+      <div class="resume-layout">
+        <div class="resume-preview-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg></div>
+        <div class="resume-text"><h3>Md Palash Mia — Resume</h3><p>A complete overview of my education, technical skills, professional experience, and research projects, formatted for print and ATS systems.</p><a href="assets/resume.pdf" class="btn btn-primary resume-cta" download>Download Resume (PDF)</a></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="panel">
+      <div class="panel-head"><div><span class="panel-eyebrow">Contact</span><h2>Get In Touch</h2><p class="panel-sub">Open to opportunities in garment and textile manufacturing, quality assurance, and production engineering.</p></div></div>
+      <div class="contact-grid">
+        <div class="contact-tiles">
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#EA4335" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div><h4>Email</h4><p>palashmd985bd@gmail.com</p></div></div>
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#22B08D" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"/></svg></div><div><h4>Phone</h4><p>+880 1516058708</p></div></div>
+          <div class="contact-tile"><div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="#0A66C2" stroke-width="1.8"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9h4v2c1-1.5 2.7-2.3 4.5-2.3 3 0 5.5 2 5.5 6.3V21h-4v-5c0-1.7-.7-3-2.3-3S13 14.3 13 16v5h-4z"/></svg></div><div><h4>LinkedIn</h4><p>linkedin.com/in/palash1423</p></div></div>
+        </div>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row"><div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" required></div><div class="form-group"><label for="cf-email">Email</label><input type="email" id="cf-email" required></div></div>
+          <div class="form-group"><label for="cf-subject">Subject</label><input type="text" id="cf-subject" required></div>
+          <div class="form-group"><label for="cf-message">Message</label><textarea id="cf-message" rows="5" required></textarea></div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note" id="formNote" role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer"><p>&copy; <span id="year"></span> Md Palash Mia. Designed with professionalism and passion.</p></footer>
+  </main>
+</div>
+
+<button class="back-to-top" id="backToTop"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Core interactions that must work regardless of whether GSAP loads successfully
+  setupSidebarToggle();
+  wireContactForm();
+  setupNavClicks();
+  setupActiveNavTracking();
+
+  // Placeholder links (project reports, certificates) — don't exist yet, so
+  // don't let them jump-scroll to the top. Tell the visitor plainly instead.
+  const placeholderNote = document.createElement('div');
+  placeholderNote.className = 'placeholder-note';
+  placeholderNote.textContent = 'This link isn\'t connected yet.';
+  document.body.appendChild(placeholderNote);
+  let noteTimeout;
+  document.querySelectorAll('[data-placeholder-link]').forEach(link => {
+    link.setAttribute('aria-disabled', 'true');
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      placeholderNote.classList.add('visible');
+      clearTimeout(noteTimeout);
+      noteTimeout = setTimeout(() => placeholderNote.classList.remove('visible'), 2200);
+    });
+  });
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.panel, .edu-tile, .featured-project-side, .internship-side, .skill-chip-card, .value-tile').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+    document.querySelectorAll('.skill-chip-level span').forEach(el => { el.style.transform = 'none'; });
+    runBasicFunctionality(); return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero
+  const tapeTicks = gsap.utils.toArray('.tape-tick');
+
+  const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.9 } });
+  heroTimeline.from('.sidebar', { opacity: 0, y: -30, duration: 0.9, clearProps: 'transform' }, 0)
+    .from('.status-pill', { opacity: 0, y: 20, scale: 0.95, duration: 0.6 }, 0.15)
+    .from('.hero-headline .line span', { opacity: 0, y: 40, duration: 0.9, stagger: 0.12 }, 0.25)
+    .from('.stitch-underline', { opacity: 0, scaleX: 0, transformOrigin: 'left center', duration: 0.7, ease: 'power2.out' }, 0.72)
+    .from('.hero-intro', { opacity: 0, y: 30, duration: 0.8 }, 0.7)
+    .from('.tape-ruler', { opacity: 0, scaleX: 0.85, transformOrigin: 'left center', duration: 0.9, ease: 'power2.out' }, 1.0)
+    .from(tapeTicks, { opacity: 0, duration: 0.5, stagger: 0.008 }, 1.05)
+    .from('.tape-pin', { opacity: 0, y: -16, duration: 0.6, stagger: 0.12, ease: 'back.out(1.6)' }, 1.25)
+    .from('.tape-pins-fallback .fallback-stat', { opacity: 0, y: 16, duration: 0.6, stagger: 0.1 }, 1.25)
+    .from('.swatch-chip', { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 1.5)
+    .from('.garment-tag', { opacity: 0, y: 36, rotation: -2, scale: 0.96, duration: 0.9, ease: 'back.out(1.4)' }, 0.9)
+    .from('.tag-loop', { opacity: 0, y: -8, duration: 0.5 }, 1.15);
+
+  if (window.screen.width >= 700) {
+    gsap.to('.blob-1', { x: 40, y: 30, scale: 1.05, duration: 26, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.blob-2', { x: -35, y: -25, scale: 1.08, duration: 32, ease: 'sine.inOut', repeat: -1, yoyo: true });
+    gsap.to('.blob-3', { x: 25, y: -30, scale: 0.95, duration: 22, ease: 'sine.inOut', repeat: -1, yoyo: true });
+  }
+  // Section animations - CORRECTED: Text from LEFT, Cards from RIGHT
+  // About text slides from LEFT
+  gsap.from('.about-text', { opacity: 0, x: -60, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.about-text', start: 'top 85%', toggleActions: 'play none none reverse' } });
+  
+  // Value tiles slide from RIGHT (x: 60)
+  document.querySelectorAll('.value-tile').forEach((tile, i) => { 
+    gsap.from(tile, { 
+      opacity: 0, 
+      x: 60, 
+      duration: 0.7, 
+      ease: 'power3.out', 
+      scrollTrigger: { trigger: tile, start: 'top 90%', toggleActions: 'play none none reverse' }, 
+      delay: i * 0.08 
+    }); 
+  });
+  
+  document.querySelectorAll('.edu-tile').forEach((tile, i) => { 
+    gsap.from(tile, { opacity: 0, x: -60, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 88%', toggleActions: 'play none none reverse' }, delay: i * 0.15 }); 
+  });
+  
+  document.querySelectorAll('.skill-block').forEach((block) => {
+    const cards = block.querySelectorAll('.skill-chip-card');
+    if (!cards.length) return;
+    gsap.from(cards, { opacity: 0, y: 22, duration: 0.55, stagger: 0.06, ease: 'power2.out', scrollTrigger: { trigger: block, start: 'top 90%', toggleActions: 'play none none reverse' } });
+    cards.forEach((card, i) => {
+      const bars = card.querySelectorAll('.skill-chip-level span');
+      if (!bars.length) return;
+      gsap.to(bars, { scaleX: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out', delay: 0.25 + i * 0.06, scrollTrigger: { trigger: block, start: 'top 90%', toggleActions: 'play none none reverse' } });
+    });
+  });
+  
+  document.querySelectorAll('.internship-side').forEach((side, i) => { 
+    gsap.from(side, { opacity: 0, x: -50, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: side, start: 'top 85%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+  });
+  
+  const featuredProject = document.querySelector('.featured-project');
+  if (featuredProject) {
+    gsap.from('.featured-project-side', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: featuredProject, start: 'top 88%', toggleActions: 'play none none reverse' } });
+    gsap.from('.featured-project-body', { opacity: 0, x: -40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: featuredProject, start: 'top 88%', toggleActions: 'play none none reverse' } });
+  }
+
+  const eduExtraRows = gsap.utils.toArray('.edu-extra-row');
+  if (eduExtraRows.length) {
+    gsap.from(eduExtraRows, { opacity: 0, y: 14, duration: 0.5, stagger: 0.08, ease: 'power2.out', scrollTrigger: { trigger: '.edu-extra', start: 'top 92%', toggleActions: 'play none none reverse' } });
+  }
+  
+  document.querySelectorAll('.expert-card').forEach((card, i) => { 
+    gsap.from(card, { opacity: 0, y: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+  });
+  
+  gsap.from('.resume-preview-tile', { opacity: 0, x: -50, rotation: -5, duration: 0.8, ease: 'back.out(1.4)', scrollTrigger: { trigger: '.resume-preview-tile', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  gsap.from('.resume-text', { opacity: 0, x: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: '.resume-text', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  
+  document.querySelectorAll('.contact-tile').forEach((tile, i) => { 
+    gsap.from(tile, { opacity: 0, x: -40, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.06 }); 
+  });
+  
+  gsap.from('.contact-form', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact-form', start: 'top 88%', toggleActions: 'play none none reverse' } });
+
+  // (Active nav highlighting is handled by setupActiveNavTracking() in the core section above,
+  // so the white indicator moves instantly on click and doesn't wait on GSAP/ScrollTrigger.)
+
+  // Back to top & scroll progress
+  const backToTop = document.getElementById('backToTop');
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (scrollProgress) { gsap.to(scrollProgress, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.1 } }); }
+  if (backToTop) { ScrollTrigger.create({ trigger: document.body, start: 'top -480px', onEnter: () => backToTop.classList.remove('visible'), onEnterBack: () => backToTop.classList.add('visible'), onLeave: () => backToTop.classList.add('visible'), onLeaveBack: () => backToTop.classList.remove('visible') }); }
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+  ScrollTrigger.refresh();
+  window.addEventListener('resize', () => ScrollTrigger.refresh());
+
+  function setupNavClicks() {
+    document.querySelectorAll('#navLinks a[data-nav]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          // Move the white highlight immediately — don't wait for the smooth scroll
+          // (which can take several hundred ms) to finish before it reacts.
+          setActiveNavLink(href.slice(1));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const sidebar = document.getElementById('sidebar');
+          const toggle = document.getElementById('sidebarToggle');
+          const overlay = document.getElementById('sidebarOverlay');
+          if (sidebar && sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            toggle?.classList.remove('open');
+            toggle?.setAttribute('aria-expanded', 'false');
+            overlay?.classList.remove('visible');
+            document.body.classList.remove('nav-open');
+          }
+        }
+      });
+    });
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  // Moves the white pill behind the active link. Pure CSS-transform + a plain
+  // IntersectionObserver — no GSAP dependency, so it works instantly even if
+  // the animation CDN is slow or fails to load.
+  function setActiveNavLink(id) {
+    const navAnchors = document.querySelectorAll('#navLinks a[data-nav]');
+    const navIndicator = document.getElementById('navIndicator');
+    const navLinks = document.getElementById('navLinks');
+    navAnchors.forEach(a => {
+      const isActive = a.getAttribute('href') === `#${id}`;
+      a.classList.toggle('active', isActive);
+      if (isActive && navIndicator && navLinks) {
+        const offsetTop = a.getBoundingClientRect().top - navLinks.getBoundingClientRect().top;
+        navIndicator.style.transform = `translateY(${offsetTop}px)`;
+        navIndicator.style.height = `${a.offsetHeight}px`;
+      }
+    });
+  }
+
+  function setupActiveNavTracking() {
+    const sections = document.querySelectorAll('main.content section[id]');
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) setActiveNavLink(entry.target.id); });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    sections.forEach(sec => observer.observe(sec));
+
+    // Keep the pill aligned with its link if the layout reflows (resize, orientation change).
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const current = document.querySelector('#navLinks a[data-nav].active');
+        if (current) setActiveNavLink(current.getAttribute('href').slice(1));
+      }, 150);
+    }, { passive: true });
+  }
+
+  function setupSidebarToggle() {
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    if (!sidebarToggle || !sidebar || !sidebarOverlay) return;
+    function setOpen(isOpen) {
+      sidebar.classList.toggle('open', isOpen);
+      sidebarToggle.classList.toggle('open', isOpen);
+      sidebarToggle.setAttribute('aria-expanded', String(isOpen));
+      sidebarOverlay.classList.toggle('visible', isOpen);
+      document.body.classList.toggle('nav-open', isOpen);
+    }
+    sidebarToggle.addEventListener('click', () => setOpen(!sidebar.classList.contains('open')));
+    sidebarOverlay.addEventListener('click', () => setOpen(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) setOpen(false); });
+  }
+
+  function wireContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    const formNote = document.getElementById('formNote');
+    if (!contactForm) return;
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.checkValidity()) { formNote.textContent = 'Please fill in all required fields correctly.'; return; }
+      const name = document.getElementById('cf-name').value.trim();
+      const email = document.getElementById('cf-email').value.trim();
+      const subject = document.getElementById('cf-subject').value.trim();
+      const message = document.getElementById('cf-message').value.trim();
+      const mailBody = `${message}\n\n— ${name} (${email})`;
+      const mailtoUrl = `mailto:palashmd985bd@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+      window.location.href = mailtoUrl;
+      formNote.textContent = 'Opening your email app with this message pre-filled — send it from there to reach me.';
+      contactForm.reset();
+    });
+  }
+
+  function runBasicFunctionality() {
+    const progress = document.getElementById('scrollProgress');
+    const backToTop = document.getElementById('backToTop');
+    let scrollTicking = false;
+    function onScrollUpdate() {
+      if (progress) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.transform = `scaleX(${docHeight > 0 ? window.scrollY / docHeight : 0})`;
+      }
+      if (backToTop) backToTop.classList.toggle('visible', window.scrollY > 480);
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) { requestAnimationFrame(onScrollUpdate); scrollTicking = true; }
+    }, { passive: true });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  }
+});
+</script>
+
+</body>
+</html>
