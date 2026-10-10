@@ -45,7 +45,7 @@
       --card: #FFFFFF;
       --ink: #171325;
       --ink-soft: #2E2B3B;
-      --ink-muted: #4A4758;
+      --ink-muted: #3E3B4D;
       --border: rgba(23,19,37,0.09);
       --sidebar-bg: #14121C;
       --sidebar-text: #B9B5CC;
@@ -64,6 +64,7 @@
       --rose-tile: #FFE4E6;
       --sky: #3B82F6;
       --sky-tile: #DBEAFE;
+      --mint-ink: #117A5F; --coral-ink: #B5402B; --gold-ink: #8A6309; --rose-ink: #A4304A; --sky-ink: #1B5BC0;
       --font-display: 'Playfair Display', serif;
       --font-body: 'Libre Caslon Text', 'Georgia', serif;
       --font-mono: 'Manrope', monospace;
@@ -89,15 +90,10 @@
       line-height: 1.8;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
+      text-rendering: auto;
     }
     h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
     a { color: inherit; text-decoration: none; }
-    @media (hover: hover) {
-      .tile, .value-tile, .edu-tile, .internship-side, .featured-project-side, .resume-preview-tile, .contact-tile, .skill-chip-card, .swatch-chip {
-        will-change: transform;
-      }
-    }
     a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
       outline: 2px solid var(--primary);
       outline-offset: 3px;
@@ -118,7 +114,6 @@
     .ambient-blob {
       position: fixed;
       border-radius: 50%;
-      filter: blur(70px);
       pointer-events: none;
       z-index: 0;
       opacity: 0.45;
@@ -127,7 +122,7 @@
     .blob-2 { width: 460px; height: 460px; bottom: -120px; right: 6%; background: radial-gradient(circle, var(--mint), transparent 70%); }
     .blob-3 { width: 380px; height: 380px; top: 38%; right: 28%; background: radial-gradient(circle, var(--coral), transparent 70%); opacity: 0.30; }
     @media (max-width:700px) {
-      .ambient-blob { filter: blur(46px); }
+      .ambient-blob { opacity: 0.35; }
       .blob-1 { width: 300px; height: 300px; }
       .blob-2 { width: 260px; height: 260px; }
       .blob-3 { display: none; }
@@ -181,7 +176,7 @@
       position: absolute; top: -60px; left: -80px;
       width: 260px; height: 260px; border-radius: 50%;
       background: radial-gradient(circle, var(--mint) 0%, transparent 70%);
-      opacity: 0.16; filter: blur(60px); pointer-events: none;
+      opacity: 0.16; pointer-events: none;
       animation: sidebarDrift 18s ease-in-out infinite alternate;
     }
     @keyframes sidebarDrift { 0% { transform: translate(0,0); } 100% { transform: translate(50px,140px); } }
@@ -319,7 +314,6 @@
       border-radius: 999px;
       overflow: hidden;
       transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
-      will-change: transform;
       font-family: var(--font-mono);
     }
     .btn-primary { background: var(--ink); color: #fff; }
@@ -352,7 +346,7 @@
       font-size: 0.8rem; font-weight: 700; padding: 0.5rem 0.95rem;
       border-radius: 999px; font-family: var(--font-mono);
     }
-    .status-pill.mint { background: var(--mint-tile); color: var(--mint); }
+    .status-pill.mint { background: var(--mint-tile); color: var(--mint-ink); }
     .status-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--mint); animation: pulse 2s ease-in-out infinite; }
     @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
@@ -408,15 +402,16 @@
     .tape-pin.mint .pin-card { background: var(--mint-tile); }
     .tape-pin.coral .pin-card { background: var(--coral-tile); }
     .pin-value { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--ink); line-height: 1.15; }
-    .pin-label { display: block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 0.1rem; }
+    .pin-label { display: block; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.03em; margin-top: 0.1rem; }
 
     /* Fabric-swatch chips */
-    .swatch-row { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 2.4rem; }
+    .swatch-row { display: flex; gap: 0.5rem; flex-wrap: nowrap; margin-top: 2.4rem; }
+    @media (max-width:560px) { .swatch-row { flex-wrap: wrap; } }
     .swatch-chip {
       display: inline-flex; align-items: center; gap: 0.55rem;
       background: var(--card); border: 1px solid var(--border);
-      padding: 0.5rem 0.9rem 0.5rem 0.6rem; border-radius: var(--r-sm);
-      font-family: var(--font-mono); font-size: 0.76rem; font-weight: 600; color: var(--ink-soft);
+      padding: 0.45rem 0.7rem 0.45rem 0.5rem; white-space: nowrap; flex-shrink: 0; border-radius: var(--r-sm);
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--ink-soft);
       box-shadow: var(--shadow-card);
     }
     .swatch-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; }
@@ -448,7 +443,7 @@
     }
     .tag-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .tag-info { width: 100%; text-align: center; margin-top: 1.1rem; }
-    .tag-eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+    .tag-eyebrow { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
     .tag-info h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-top: 0.35rem; }
     .tag-role { font-size: 0.85rem; color: var(--ink-soft); font-weight: 500; margin-top: 0.25rem; }
     .tag-divider {
@@ -502,7 +497,7 @@
       flex-shrink: 0;
     }
     .tile-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 1.8; }
-    .tile-label { font-size: 0.76rem; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tile-label { font-size: 0.8rem; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
     .tile-value { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
     .tile-value small { font-size: 0.8rem; font-weight: 400; color: var(--ink-muted); }
     .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.6rem,4vw,2.6rem); }
@@ -514,7 +509,7 @@
       padding: 1.2rem 1rem; 
       background: var(--primary-tile); 
       text-align: center;
-      min-height: 140px;
+      min-height: 150px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -540,8 +535,8 @@
     .value-tile.rose .tile-icon svg { stroke: var(--rose); }
     .value-tile.sky .tile-icon svg { stroke: var(--sky); }
     .value-tile .value-stat { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
-    .value-tile .value-label { font-size: 0.75rem; color: var(--ink-muted); font-weight: 500; line-height: 1.35; margin-top: 0.2rem; }
-    .value-tile .value-sub { font-size: 0.65rem; color: var(--ink-muted); font-weight: 400; line-height: 1.35; margin-top: 0.1rem; }
+    .value-tile .value-label { font-size: 0.84rem; color: var(--ink-muted); font-weight: 500; line-height: 1.35; margin-top: 0.2rem; }
+    .value-tile .value-sub { font-size: 0.76rem; color: var(--ink-muted); font-weight: 400; line-height: 1.35; margin-top: 0.1rem; }
     @media (max-width:860px) { 
       .about-grid { grid-template-columns: 1fr; } 
       .values-grid { grid-template-columns: repeat(2,1fr); }
@@ -565,8 +560,8 @@
     .edu-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
     .edu-year { font-family: var(--font-mono); font-weight: 600; font-size: 0.74rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; }
     .edu-tile h3 { font-size: 1.15rem; font-weight: 700; margin-top: 0.15rem; color: var(--ink); }
-    .edu-dept { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.15rem; font-weight: 500; }
-    .edu-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.7rem; font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-muted); }
+    .edu-dept { font-size: 0.96rem; color: var(--ink-soft); margin-top: 0.15rem; font-weight: 500; }
+    .edu-meta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.7rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-muted); }
 
     /* Skills */
     .skills-cols { display: flex; flex-direction: column; gap: 2.2rem; }
@@ -576,20 +571,20 @@
       color: var(--ink-muted); margin-bottom: 1.1rem;
     }
     .skill-block h3::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--block-accent, var(--primary)); flex-shrink: 0; }
-    .skill-block[data-color="primary"] { --block-accent: var(--primary); --block-tile: var(--primary-tile); }
-    .skill-block[data-color="mint"] { --block-accent: var(--mint); --block-tile: var(--mint-tile); }
-    .skill-block[data-color="coral"] { --block-accent: var(--coral); --block-tile: var(--coral-tile); }
-    .skill-chip-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+    .skill-block[data-color="primary"] { --block-ink: var(--primary); --block-accent: var(--primary); --block-tile: var(--primary-tile); }
+    .skill-block[data-color="mint"] { --block-ink: var(--mint-ink); --block-accent: var(--mint); --block-tile: var(--mint-tile); }
+    .skill-block[data-color="coral"] { --block-ink: var(--coral-ink); --block-accent: var(--coral); --block-tile: var(--coral-tile); }
+    .skill-chip-grid { display: grid; grid-template-columns: repeat(4, 172px); justify-content: start; gap: 1.2rem; }
     .skill-chip-card {
       position: relative;
       border-radius: var(--r-md);
-      padding: 1.7rem 1.5rem 1.4rem;
+      padding: 1.9rem 0.9rem 1.5rem;
       background: var(--card);
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.9rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 0.85rem;
+      min-height: 205px;
       overflow: hidden;
       box-shadow: var(--shadow-card);
       transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
-      will-change: transform;
     }
     .skill-chip-card::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
@@ -598,28 +593,37 @@
     .skill-chip-card:hover { transform: translateY(-7px) scale(1.02); box-shadow: 0 18px 36px -8px rgba(23,19,37,0.18); }
     .skill-chip-card:active { transform: translateY(-2px) scale(0.99); transition-duration: 0.15s; }
     .skill-chip-icon {
-      width: 50px; height: 50px; border-radius: 50%;
+      width: 58px; height: 58px; border-radius: 50%;
       background: var(--block-tile, var(--primary-tile));
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       transition: transform 0.4s var(--ease-soft), background 0.4s var(--ease-soft), box-shadow 0.4s var(--ease-soft);
     }
-    .skill-chip-icon svg { width: 22px; height: 22px; stroke: var(--block-accent, var(--primary)); fill: none; stroke-width: 1.7; transition: stroke 0.3s ease; }
+    .skill-chip-icon svg { width: 26px; height: 26px; stroke: var(--block-accent, var(--primary)); fill: none; stroke-width: 1.7; transition: stroke 0.3s ease; }
     .skill-chip-card:hover .skill-chip-icon { transform: scale(1.12) translateY(-3px); background: var(--block-accent, var(--primary)); box-shadow: 0 8px 18px -4px rgba(23,19,37,0.35); }
     .skill-chip-card:hover .skill-chip-icon svg { stroke: #fff; }
-    .skill-chip-name { font-size: 1.02rem; font-weight: 700; color: var(--ink); line-height: 1.3; transition: color 0.3s ease; }
+    .skill-chip-name { font-size: 0.95rem; font-weight: 700; color: var(--ink); line-height: 1.3; min-height: 2.6em; display: flex; align-items: center; justify-content: center; transition: color 0.3s ease; }
     .skill-chip-card:hover .skill-chip-name { color: var(--block-accent, var(--primary)); }
-    .skill-chip-level { display: flex; gap: 4px; width: 100%; justify-content: center; }
-    .skill-chip-level span { flex: 1; height: 5px; border-radius: 3px; background: var(--border); transform: scaleX(0); transform-origin: left; }
-    .skill-chip-card[data-tier="core"] .skill-chip-level span { background: var(--block-accent, var(--primary)); }
-    .skill-chip-card[data-tier="proficient"] .skill-chip-level span:nth-child(-n+2) { background: var(--block-accent, var(--primary)); }
     .skill-chip-tier {
-      font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-      color: var(--ink-muted);
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--block-ink, var(--primary)); background: var(--block-tile, var(--primary-tile));
+      padding: 0.28rem 0.7rem; border-radius: 999px;
     }
     @media (max-width:860px) { .skill-chip-grid { grid-template-columns: repeat(2, 1fr); gap: 1.3rem; } }
     @media (max-width:480px) { .skill-chip-grid { grid-template-columns: 1fr; } }
     #skills { padding-bottom: clamp(2.6rem,5vw,3.4rem); }
+
+    /* Skill cards: slightly wider than tall */
+    .skill-chip-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.9rem; }
+    .skill-chip-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+      gap: 0.65rem; height: 138px; min-height: 0; padding: 1rem 0.6rem;
+    }
+    .skill-chip-icon { width: 44px; height: 44px; }
+    .skill-chip-icon svg { width: 21px; height: 21px; }
+    .skill-chip-name { min-height: 0; font-size: 0.92rem; line-height: 1.25; text-align: center; justify-content: center; }
+    @media (max-width:860px) { .skill-chip-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:480px) { .skill-chip-grid { grid-template-columns: 1fr; } }
 
     /* Experience */
     .internship-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem; }
@@ -627,7 +631,7 @@
     .internship-side:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 12px 32px rgba(23,19,37,0.08); }
     .internship-side h3 { font-size: 1.15rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); }
     .internship-side .company { color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-top: 0.4rem; }
-    .internship-side .duration { color: var(--ink-muted); font-family: var(--font-mono); font-weight: 600; font-size: 0.78rem; margin-top: 0.7rem; }
+    .internship-side .duration { color: var(--ink-muted); font-family: var(--font-mono); font-weight: 600; font-size: 0.84rem; margin-top: 0.7rem; }
     
     .internship-block h4 { 
       font-family: var(--font-display); 
@@ -637,29 +641,62 @@
       color: var(--primary-light);
       margin-bottom: 0.5rem; 
     }
-    .internship-block p, .internship-block li { color: var(--ink-soft); font-size: 0.92rem; font-weight: 400; line-height: 1.8; }
+    .internship-block p, .internship-block li { color: var(--ink-soft); font-size: 0.96rem; font-weight: 400; line-height: 1.8; }
     .internship-block ul { display: flex; flex-direction: column; gap: 0.45rem; }
     .internship-block li::before { content: '— '; color: var(--primary); }
     .tech-chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.3rem; }
-    .tech-chip { font-family: var(--font-mono); font-size: 0.72rem; background: var(--primary-tile); color: var(--primary); padding: 0.32rem 0.75rem; border-radius: 999px; font-weight: 600; }
-    .tech-chip.alt { background: var(--gold-tile); color: var(--gold); }
-    .tech-chip.alt2 { background: var(--rose-tile); color: var(--rose); }
+    .tech-chip { font-family: var(--font-mono); font-size: 0.76rem; background: var(--primary-tile); color: var(--primary); padding: 0.32rem 0.75rem; border-radius: 999px; font-weight: 600; }
+    .tech-chip.alt { background: var(--gold-tile); color: var(--gold-ink); }
+    .tech-chip.alt2 { background: var(--rose-tile); color: var(--rose-ink); }
+    .tech-chip.alt3 { background: var(--mint-tile); color: var(--mint-ink); }
+    .tech-chip.alt4 { background: var(--sky-tile); color: var(--sky-ink); }
     @media (max-width:780px) { .internship-layout { grid-template-columns: 1fr; } }
 
+    /* Compact About + Experience */
+    #about, #experience { padding: clamp(1.4rem,3vw,2rem) clamp(1.4rem,3.4vw,2.2rem); }
+    #about .panel-head, #experience .panel-head { margin-bottom: 1.1rem; }
+    .about-grid { gap: 1.4rem; }
+    .about-text p { font-size: 0.95rem; line-height: 1.65; }
+    .about-text p + p { margin-top: 0.7rem; }
+    .values-grid { gap: 0.65rem; }
+    .value-tile { min-height: 112px; padding: 0.8rem; }
+    .value-tile .tile-icon { width: 34px; height: 34px; margin-bottom: 0.25rem; }
+    .value-tile .tile-icon svg { width: 17px; height: 17px; }
+    .value-tile .value-stat { font-size: 1.3rem; }
+    .internship-layout { gap: 1.2rem; margin-bottom: 1.1rem; }
+    .internship-layout:last-child { margin-bottom: 0; }
+    .internship-side { padding: 1rem 1.1rem; }
+    .internship-side .duration { margin-top: 0.4rem; }
+    .internship-block + .internship-block { margin-top: 0.7rem; }
+    .internship-block h4 { margin-bottom: 0.3rem; font-size: 1rem; }
+    .internship-block p, .internship-block li { font-size: 0.94rem; line-height: 1.6; }
+    .internship-block ul { gap: 0.2rem; }
+
     /* Projects */
-    .featured-project { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-    .featured-project-side { order: 2; background: var(--primary-tile); border-radius: var(--r-md); padding: 1.5rem; height: fit-content; display: flex; flex-direction: column; gap: 0.6rem; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+    .featured-project { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .featured-project-side { order: 2; background: var(--primary-tile); border-radius: var(--r-md); padding: 1.2rem 1.3rem; height: fit-content; display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
     .featured-project-body { order: 1; }
     .featured-project-side:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
     .project-tile-icon { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; }
     .project-tile-icon svg { width: 19px; height: 19px; stroke: var(--primary); }
     .featured-project-side h3 { font-size: 1.3rem; font-weight: 700; color: var(--ink); font-family: var(--font-display); margin-top: 0.1rem; }
-    .project-subtag { font-family: var(--font-mono); font-size: 0.74rem; font-weight: 600; letter-spacing: 0.03em; color: var(--ink-muted); margin-top: -0.35rem; }
-    .featured-project-body { color: var(--ink-soft); font-size: 0.95rem; line-height: 1.8; }
-    .featured-project-block { margin-top: 1.1rem; }
-    .featured-project-block .label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 700; margin-bottom: 0.3rem; }
-    .featured-project-block p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.7; }
+    .project-subtag { font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em; color: var(--ink-muted); margin-top: -0.35rem; }
+    .featured-project-body { color: var(--ink-soft); font-size: 0.96rem; line-height: 1.65; }
+    .featured-project-block { margin-top: 0; }
+    .project-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.9rem; }
+    .project-duo .featured-project-block { background: var(--bg); border-radius: 22px; padding: 0.8rem 1rem; }
+    @media (max-width:640px) { .project-duo { grid-template-columns: 1fr; } }
+    .featured-project-block .label { display: block; font-family: var(--font-mono); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 700; margin-bottom: 0.3rem; }
+    .featured-project-block p { color: var(--ink-soft); font-size: 0.92rem; line-height: 1.6; }
     @media (max-width:780px) { .featured-project { grid-template-columns: 1fr; } }
+
+    .project-heading { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.9rem; text-align: left; }
+    .featured-project + .project-heading { margin-top: 1.8rem; padding-top: 1.6rem; border-top: 1.5px dashed var(--border); }
+    .project-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 1rem; }
+    .lock-note { display: flex; align-items: center; gap: 0.45rem; font-family: var(--font-mono); font-size: 0.74rem; font-weight: 600; color: var(--ink-muted); margin-top: 0.9rem; }
+    .lock-note svg { width: 14px; height: 14px; stroke: var(--mint); fill: none; stroke-width: 2; flex-shrink: 0; }
+    .project-steps { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.74rem; font-weight: 700; color: var(--ink-soft); margin-top: 0.4rem; }
+    .project-steps .arrow { color: var(--mint); }
 
     /* Certificates */
 
@@ -693,13 +730,13 @@
       color: var(--ink);
     }
     .expert-card .expert-title {
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       color: var(--primary);
       font-weight: 600;
       margin-bottom: 0.6rem;
     }
     .expert-card .expert-quote {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--ink-soft);
       font-style: italic;
       line-height: 1.6;
@@ -723,7 +760,7 @@
     .contact-tile:hover { transform: translateX(4px) scale(1.01); background: var(--primary-tile); }
     .contact-tile .icon-wrap { width: 42px; height: 42px; border-radius: 11px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .contact-tile .icon-wrap svg { width: 18px; height: 18px; stroke: var(--primary); }
-    .contact-tile h4 { font-size: 0.8rem; color: var(--ink-muted); font-weight: 500; }
+    .contact-tile h4 { font-size: 0.86rem; color: var(--ink-muted); font-weight: 500; }
     .contact-tile p { font-size: 0.94rem; font-weight: 600; margin-top: 0.1rem; font-family: var(--font-mono); color: var(--ink); }
     .contact-form { background: var(--bg); border-radius: var(--r-md); padding: clamp(1.5rem,4vw,2rem); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -732,8 +769,8 @@
     .form-group input, .form-group textarea { padding: 0.8rem 0.95rem; border: 1px solid var(--border); border-radius: var(--r-sm); background: #fff; font-weight: 500; width: 100%; font-family: var(--font-body); }
     .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tile); }
     .form-note { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.9rem; }
-    .form-note.success { color: var(--mint); font-weight: 600; }
-    .form-note.error { color: var(--coral); font-weight: 600; }
+    .form-note.success { color: var(--mint-ink); font-weight: 600; }
+    .form-note.error { color: var(--coral-ink); font-weight: 600; }
     .contact-form button[type="submit"][disabled] { opacity: 0.65; cursor: not-allowed; }
     @media (max-width:860px) { .contact-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } }
 
@@ -744,6 +781,86 @@
     @media (max-width:480px) {
       .hero-headline { font-size: 2.2rem; }
     }
+
+    /* ===== Premium polish: consistent rhythm, calmer motion, refined hierarchy ===== */
+    ::selection { background: var(--primary); color: #fff; }
+    body { line-height: 1.7; }
+    @media (min-width:961px) { .content { margin-left: calc(270px + max(0px, (100vw - 1450px) / 2)); } }
+    .content { gap: 1.5rem; }
+    .panel { border: 1px solid rgba(23,19,37,0.06); box-shadow: 0 1px 2px rgba(23,19,37,0.03), 0 14px 34px rgba(23,19,37,0.05); }
+    .panel, #about, #experience, #skills { padding: clamp(1.6rem,3.4vw,2.6rem) clamp(1.5rem,3.6vw,2.8rem); }
+    .hero-panel { padding: clamp(1.8rem,3.6vw,2.8rem); }
+    .panel-head, #about .panel-head, #experience .panel-head { align-items: flex-end; margin-bottom: 1.5rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
+    .panel-head h2 { font-size: clamp(1.7rem,3vw,2.3rem); font-weight: 800; letter-spacing: -0.015em; line-height: 1.15; }
+    .panel-eyebrow { font-size: 0.72rem; letter-spacing: 0.14em; margin-bottom: 0.5rem; }
+    .panel-sub { margin-top: 0.5rem; }
+    .btn { letter-spacing: 0.01em; }
+
+    /* calmer hover: lift only */
+    .tile:hover, .value-tile:hover, .edu-tile:hover, .internship-side:hover, .featured-project-side:hover, .expert-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(23,19,37,0.07); }
+    .skill-chip-card:hover { transform: translateY(-4px); }
+    .contact-tile:hover { transform: translateX(3px); }
+    .value-tile, .edu-tile, .internship-side, .featured-project-side { border: 1px solid rgba(23,19,37,0.05); }
+    .expert-card, .contact-tile, .contact-form { border: 1px solid var(--border); }
+
+    /* hero */
+    .hero-stage { align-items: center; margin-top: 1.4rem; }
+    .hero-intro { max-width: 52ch; }
+    .tape-measure { margin-top: 1.8rem; }
+    .swatch-row { margin-top: 2rem; }
+
+    /* about */
+    .about-grid { align-items: center; gap: clamp(1.6rem,3.6vw,2.4rem); }
+    .about-text p { max-width: 58ch; }
+    .about-text p:first-child { font-size: 1.05rem; color: var(--ink); }
+    .about-text p + p { margin-top: 0.8rem; }
+
+    /* experience: clean dividers between roles */
+    .internship-layout { margin-bottom: 1.3rem; }
+    .internship-layout + .internship-layout { padding-top: 1.3rem; border-top: 1px solid var(--border); }
+    .internship-layout:last-child { margin-bottom: 0; }
+
+    /* projects */
+    .project-heading { display: flex; align-items: center; gap: 0.9rem; font-size: 1.2rem; margin-bottom: 0.85rem; }
+    .project-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .featured-project + .project-heading { margin-top: 1.8rem; padding-top: 0; border-top: none; }
+
+    /* skills */
+    .skills-cols { gap: 1.8rem; }
+    .skill-block h3 { margin-bottom: 0.9rem; }
+    .skill-block h3::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .skill-chip-card { border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(23,19,37,0.03), 0 8px 20px rgba(23,19,37,0.04); }
+    .skill-chip-card::before { height: 3px; }
+
+    /* education, experts, resume, contact */
+    .edu-list { gap: 0.8rem; }
+    .experts-grid { gap: 1.2rem; }
+    .expert-card { padding: 1.5rem 1.3rem; }
+    .resume-layout { justify-content: flex-start; gap: 1.8rem; }
+    .resume-preview-tile { width: 96px; }
+    .contact-grid { align-items: start; }
+    .contact-tiles { gap: 0.7rem; }
+    .footer { padding: 1.2rem 0 0.4rem; font-size: 0.8rem; letter-spacing: 0.02em; }
+
+    /* final fixes */
+    .pin-label { white-space: nowrap; }
+    .tag-origin { text-wrap: balance; line-height: 1.5; }
+    .about-text p { max-width: none; }
+    .project-steps { margin-top: 0.7rem; }
+
+    /* Experience role cards: identical size, a little taller */
+    .internship-side { height: 176px; display: flex; flex-direction: column; justify-content: center; }
+    @media (max-width:780px) { .internship-side { height: auto; min-height: 150px; } }
+    .ambient-blob { will-change: transform; }
+
+    /* Projects: no lines beside headings; one normal divider between projects (same as Experience) */
+    .project-heading::after { content: none; }
+    .featured-project + .project-heading { margin-top: 1.3rem; padding-top: 1.3rem; border-top: 1px solid var(--border); }
+
+    /* Skills: no lines; header-to-cards gap equals cards-to-next-header gap */
+    .skill-block h3::after { content: none; }
+    .skills-cols { gap: 1.5rem; }
+    .skill-block h3 { margin-bottom: 1.5rem; }
   </style>
 </head>
 <body>
@@ -831,6 +948,7 @@
             <span class="swatch-chip"><i class="swatch-dot" style="background:var(--primary)"></i>BUTEX '24</span>
             <span class="swatch-chip"><i class="swatch-dot" style="background:var(--mint)"></i>Yarn Engineering</span>
             <span class="swatch-chip"><i class="swatch-dot" style="background:var(--coral)"></i>Costing Specialist</span>
+            <span class="swatch-chip"><i class="swatch-dot" style="background:var(--gold)"></i>BOM Automation</span>
           </div>
         </div>
 
@@ -861,9 +979,10 @@
       <div class="panel-head"><div><span class="panel-eyebrow">About</span><h2>Professional Background</h2></div></div>
       <div class="about-grid">
         <div class="about-text">
-          <p>I am a recent Textile Engineering graduate from Bangladesh University of Textiles (BUTEX) with a specialization in Yarn Engineering and a CGPA of 3.42. My academic journey has equipped me with a strong foundation in textile manufacturing, yarn production processes, and quality assurance.</p>
-          <p>Professionally, I have gained practical experience as an Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, where I handle costing inquiries for international buyers including Decathlon and Haddad. I consistently prepare 120-150 cost sheets per month, driving significant efficiency improvements in the costing process.</p>
-          <p>I am passionate about building a career in textile merchandising, where I can leverage my technical knowledge and practical experience to support efficient production planning, cost control, and global buyer relations in a growth-oriented apparel organization.</p>
+          <p>Textile Engineering graduate from Bangladesh University of Textiles (BUTEX), specializing in Yarn Engineering (CGPA 3.42).</p>
+          <p>Assistant Merchandiser in Central Costing at Snowtex Outerwear Limited, handling costing for Decathlon and Haddad and preparing 120–150 cost sheets per month.</p>
+          <p>Built an automated costing BOM generator that converts a tech pack into a buyer-specific Excel BOM in seconds.</p>
+          <p>Seeking a textile merchandising role in a growth-oriented apparel organization, focused on production planning, cost control and buyer relations.</p>
         </div>
         <div class="values-grid">
           <div class="value-tile">
@@ -914,27 +1033,26 @@
       <div class="internship-layout">
         <div class="internship-side"><h3>Assistant Merchandiser - Central Costing</h3><div class="company">Snowtex Outerwear Limited</div><div class="duration">April 2026 – Present</div></div>
         <div>
-          <div class="internship-block"><h4>Key Responsibilities</h4><ul><li>Handle costing inquiries for Decathlon and Haddad</li><li>Prepare 120-150 cost sheets per month with consistent accuracy</li><li>Coordinate with IE, CAD, and Supply Chain departments</li><li>Analyze tech packs and samples for accurate costing</li></ul></div>
-          <div class="internship-block"><h4>Key Achievement</h4><p>Drove a 30%+ improvement in costing process efficiency through systematic analysis and inter-department coordination.</p></div>
-          <div class="internship-block"><h4>Buyers Handled</h4><div class="tech-chip-row"><span class="tech-chip">Decathlon</span><span class="tech-chip alt">Haddad</span></div></div>
+          <div class="internship-block"><h4>Key Responsibilities</h4><ul><li>Handle costing inquiries for Decathlon and Haddad</li><li>Prepare 120–150 cost sheets per month</li><li>Coordinate with IE, CAD and Supply Chain</li><li>Analyze tech packs and samples for costing</li></ul></div>
+          <div class="internship-block"><h4>Key Achievement</h4><p>Improved costing efficiency by 30%+ through systematic analysis and inter-department coordination.</p></div>
         </div>
       </div>
 
       <!-- MTO Period -->
       <div class="internship-layout">
-        <div class="internship-side mint" style="background:var(--mint-tile);"><h3>Management Training Officer (MTO)</h3><div class="company" style="color:var(--mint);">Snowtex Outerwear Limited</div><div class="duration">September 2025 – April 2026</div></div>
+        <div class="internship-side mint" style="background:var(--mint-tile);"><h3>Management Training Officer (MTO)</h3><div class="company" style="color:var(--mint-ink);">Snowtex Outerwear Limited</div><div class="duration">September 2025 – April 2026</div></div>
         <div>
-          <div class="internship-block"><h4>Training &amp; Development</h4><ul><li>Intensive training in Central Costing processes and merchandising operations</li><li>Learned end-to-end costing workflow: tech pack analysis, sample evaluation, and buyer communication</li><li>Collaborated with IE, CAD, and Supply Chain teams to understand inter-departmental coordination</li><li>Developed proficiency in preparing cost sheets and analyzing buyer requirements</li></ul></div>
-          <div class="internship-block"><h4>Key Learning</h4><p>Acquired comprehensive knowledge of garment costing, buyer relations, and production planning. Built a strong foundation that enabled a smooth transition to the Assistant Merchandiser role.</p></div>
+          <div class="internship-block"><h4>Training &amp; Development</h4><ul><li>Trained in Central Costing and merchandising operations</li><li>Learned the end-to-end costing workflow: tech pack analysis, sample evaluation, buyer communication</li><li>Worked with IE, CAD and Supply Chain teams</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Built the foundation in garment costing, buyer relations and production planning that led to the Assistant Merchandiser role.</p></div>
         </div>
       </div>
 
       <!-- Motin Spinning Internship -->
       <div class="internship-layout">
-        <div class="internship-side coral" style="background:var(--coral-tile);"><h3>Intern - Yarn Manufacturing</h3><div class="company" style="color:var(--coral);">Motin Spinning Mills Ltd. (DBL Group)</div><div class="duration">2 Months</div></div>
+        <div class="internship-side coral" style="background:var(--coral-tile);"><h3>Intern - Yarn Manufacturing</h3><div class="company" style="color:var(--coral-ink);">Motin Spinning Mills Ltd. (DBL Group)</div><div class="duration">2 Months</div></div>
         <div>
-          <div class="internship-block"><h4>Hands-on Training</h4><ul><li>Ring, vortex, and rotor spinning methods</li><li>Yarn quality testing - count, strength, evenness, imperfection</li><li>HVI and AFIS testing for fiber quality</li><li>Blowroom efficiency testing and calculation</li></ul></div>
-          <div class="internship-block"><h4>Key Learning</h4><p>Gained practical understanding of yarn manufacturing processes and quality control parameters in a production environment.</p></div>
+          <div class="internship-block"><h4>Hands-on Training</h4><ul><li>Ring, vortex and rotor spinning</li><li>Yarn quality testing: count, strength, evenness, imperfections</li><li>HVI and AFIS fiber testing</li><li>Blowroom efficiency testing</li></ul></div>
+          <div class="internship-block"><h4>Key Learning</h4><p>Practical experience of yarn manufacturing and quality control in a production environment.</p></div>
         </div>
       </div>
     </section>
@@ -942,18 +1060,42 @@
     <!-- PROJECTS -->
     <section id="projects" class="panel">
       <div class="panel-head"><div><span class="panel-eyebrow">Projects</span><h2>Academic &amp; Independent Projects</h2></div></div>
+      <h3 class="project-heading">Project 1</h3>
       <div class="featured-project">
         <div class="featured-project-side">
-          <div class="project-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#2D3B66" stroke-width="1.8"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M3 13l4-4 4 4 4-6 6 6"/></svg></div>
           <span class="panel-eyebrow">Academic Thesis</span>
           <h3>Tri-Blended Yarn</h3>
           <span class="project-subtag">Ring vs Vortex Spinning</span>
-          <div class="tech-chip-row"><span class="tech-chip">Ring Spinning</span><span class="tech-chip alt">Vortex Spinning</span><span class="tech-chip alt2">HVI</span><span class="tech-chip">AFIS</span></div>
+          <div class="tech-chip-row"><span class="tech-chip alt3">Ring Spinning</span><span class="tech-chip alt">Vortex Spinning</span><span class="tech-chip alt2">HVI</span><span class="tech-chip alt4">AFIS</span></div>
         </div>
         <div class="featured-project-body">
-          <p>Compared properties of ring and vortex yarn made from viscose, recycled cotton and polyester. Blended recycled cotton, modal and recycled polyester (30:40:30) for 20&nbsp;Ne and 30&nbsp;Ne yarns.</p>
-          <div class="featured-project-block"><span class="label">Methodology</span><p>Evaluated tensile strength, elongation, CV%, imperfections, and hairiness using HVI &amp; AFIS.</p></div>
-          <div class="featured-project-block"><span class="label">Key Finding</span><p>Vortex yarns showed better evenness and fewer imperfections; ring yarns had higher strength.</p></div>
+          <p>Compared the properties of ring and vortex yarn made from viscose, recycled cotton and polyester. Blended recycled cotton, modal and recycled polyester (30:40:30) for 20&nbsp;Ne and 30&nbsp;Ne yarns.</p>
+          <div class="project-duo">
+            <div class="featured-project-block"><span class="label">Methodology</span><p>Evaluated tensile strength, elongation, CV%, imperfections and hairiness using HVI &amp; AFIS.</p></div>
+            <div class="featured-project-block"><span class="label">Key Finding</span><p>Vortex yarns showed better evenness and fewer imperfections; ring yarns had higher strength.</p></div>
+          </div>
+        </div>
+      </div>
+      <h3 class="project-heading">Project 2</h3>
+      <div class="featured-project">
+        <div class="featured-project-side" style="background:var(--mint-tile);">
+          <span class="panel-eyebrow" style="color:var(--mint-ink);">Independent Project</span>
+          <h3>Auto Costing BOM Generator</h3>
+          <span class="project-subtag">Tech Pack → Buyer-Specific Excel</span>
+          <div class="tech-chip-row"><span class="tech-chip">Haddad</span><span class="tech-chip alt">Decathlon</span><span class="tech-chip alt2">Malacca</span><span class="tech-chip">Portwest</span><span class="tech-chip alt">Kariban</span></div>
+          <div class="lock-note"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Password-protected</div>
+        </div>
+        <div class="featured-project-body">
+          <p>A web tool that turns a buyer's tech pack into a ready-to-use costing BOM. Upload the tech pack, click once, and the BOM is generated in the buyer's own Excel format. Built in JavaScript with AI assistance and deployed on Vercel.</p>
+          <div class="project-steps"><span>Upload Tech Pack</span><span class="arrow">→</span><span>One Click</span><span class="arrow">→</span><span>Costing BOM (.xlsx)</span></div>
+          <div class="project-duo">
+            <div class="featured-project-block"><span class="label">Problem</span><p>Costing means reading a tech pack and rebuilding it by hand in each buyer's BOM format.</p></div>
+            <div class="featured-project-block"><span class="label">Solution</span><p>The site produces the buyer-specific Excel BOM in seconds, with no manual re-entry.</p></div>
+          </div>
+          <div class="project-actions">
+            <a href="https://haddad-bom.vercel.app" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">Visit Live Site</a>
+            <a href="mailto:palashmd985bd@gmail.com?subject=Access%20request%3A%20Costing%20BOM%20Generator" class="btn btn-outline btn-sm">Request Access</a>
+          </div>
         </div>
       </div>
     </section>
@@ -965,27 +1107,29 @@
         <div class="skill-block" data-color="primary">
           <h3>Textile &amp; Merchandising</h3>
           <div class="skill-chip-grid">
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7.5h8M7.5 11.5h.01M12 11.5h.01M16.5 11.5h.01M7.5 15.5h.01M12 15.5h.01M16.5 15.5h.01"/></svg></span><span class="skill-chip-name">Garment Costing</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6a1 1 0 011 1v1.3H8V4.2a1 1 0 011-1z"/><rect x="5" y="5.5" width="14" height="15.3" rx="2"/><path d="M9 11h6M9 14.5h6M9 18h3"/></svg></span><span class="skill-chip-name">Tech Pack Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></span><span class="skill-chip-name">Sample Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="7" rx="1"/><rect x="13" y="4" width="8" height="16" rx="1"/><rect x="3" y="13" width="8" height="7" rx="1"/></svg></span><span class="skill-chip-name">Marker Analysis</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7.5h8M7.5 11.5h.01M12 11.5h.01M16.5 11.5h.01M7.5 15.5h.01M12 15.5h.01M16.5 15.5h.01"/></svg></span><span class="skill-chip-name">Garment Costing</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.2h6a1 1 0 011 1v1.3H8V4.2a1 1 0 011-1z"/><rect x="5" y="5.5" width="14" height="15.3" rx="2"/><path d="M9 11h6M9 14.5h6M9 18h3"/></svg></span><span class="skill-chip-name">Tech Pack Analysis</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></span><span class="skill-chip-name">Sample Analysis</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="7" rx="1"/><rect x="13" y="4" width="8" height="16" rx="1"/><rect x="3" y="13" width="8" height="7" rx="1"/></svg></span><span class="skill-chip-name">Marker Analysis</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span class="skill-chip-name">Cost Impact Analysis</span></div>
           </div>
         </div>
         <div class="skill-block" data-color="mint">
           <h3>Interpersonal Skills</h3>
           <div class="skill-chip-grid">
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-8.5 8.5c-1.2 0-2.35-.25-3.4-.71L3 21l1.7-5.1A8.5 8.5 0 1121 11.5z"/></svg></span><span class="skill-chip-name">Business Communication</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></span><span class="skill-chip-name">Inter-departmental Coordination</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0012 3z"/></svg></span><span class="skill-chip-name">Critical Thinking</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1.6"/><path d="M12 5.6V10M12 10L6 15M12 10l6 5"/><circle cx="6" cy="17" r="1.6"/><circle cx="18" cy="17" r="1.6"/></svg></span><span class="skill-chip-name">Decision Making</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-8.5 8.5c-1.2 0-2.35-.25-3.4-.71L3 21l1.7-5.1A8.5 8.5 0 1121 11.5z"/></svg></span><span class="skill-chip-name">Business Communication</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></span><span class="skill-chip-name">Cross-Dept Coordination</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-3.5 10.9c.5.4.8 1 .8 1.6V16h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0012 3z"/></svg></span><span class="skill-chip-name">Critical Thinking</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="1.6"/><path d="M12 5.6V10M12 10L6 15M12 10l6 5"/><circle cx="6" cy="17" r="1.6"/><circle cx="18" cy="17" r="1.6"/></svg></span><span class="skill-chip-name">Decision Making</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4a2 2 0 114 0v2h4a1 1 0 011 1v4h-2a2 2 0 100 4h2v4a1 1 0 01-1 1h-4v-2a2 2 0 10-4 0v2H6a1 1 0 01-1-1v-4h2a2 2 0 100-4H5V7a1 1 0 011-1h4V4z"/></svg></span><span class="skill-chip-name">Problem Solving</span></div>
           </div>
         </div>
         <div class="skill-block" data-color="coral">
           <h3>Software &amp; Tools</h3>
           <div class="skill-chip-grid">
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span class="skill-chip-name">MS Office Suite</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 01-.6-7.96A5 5 0 0116.9 8.2 4.5 4.5 0 0117.5 18H7z"/></svg></span><span class="skill-chip-name">Google Workspace</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
-            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg></span><span class="skill-chip-name">AI Utilization</span><span class="skill-chip-level" aria-hidden="true"><span></span><span></span><span></span></span><span class="skill-chip-tier">Core Strength</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span class="skill-chip-name">MS Office Suite</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 01-.6-7.96A5 5 0 0116.9 8.2 4.5 4.5 0 0117.5 18H7z"/></svg></span><span class="skill-chip-name">Google Workspace</span></div>
+            <div class="skill-chip-card" data-tier="core"><span class="skill-chip-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.2L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg></span><span class="skill-chip-name">AI Utilization</span></div>
           </div>
         </div>
       </div>
@@ -1089,7 +1233,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) {
     document.querySelectorAll('.panel, .edu-tile, .featured-project-side, .internship-side, .skill-chip-card, .value-tile').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
-    document.querySelectorAll('.skill-chip-level span').forEach(el => { el.style.transform = 'none'; });
     runBasicFunctionality(); return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -1118,11 +1261,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   // Section animations - CORRECTED: Text from LEFT, Cards from RIGHT
   // About text slides from LEFT
-  gsap.from('.about-text', { opacity: 0, x: -60, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.about-text', start: 'top 85%', toggleActions: 'play none none reverse' } });
+  gsap.from('.about-text', { clearProps: 'transform', opacity: 0, x: -60, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.about-text', start: 'top 85%', toggleActions: 'play none none reverse' } });
   
   // Value tiles slide from RIGHT (x: 60)
   document.querySelectorAll('.value-tile').forEach((tile, i) => { 
-    gsap.from(tile, { 
+    gsap.from(tile, { clearProps: 'transform', 
       opacity: 0, 
       x: 60, 
       duration: 0.7, 
@@ -1133,42 +1276,36 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   document.querySelectorAll('.edu-tile').forEach((tile, i) => { 
-    gsap.from(tile, { opacity: 0, x: -60, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 88%', toggleActions: 'play none none reverse' }, delay: i * 0.15 }); 
+    gsap.from(tile, { clearProps: 'transform', opacity: 0, x: -60, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 88%', toggleActions: 'play none none reverse' }, delay: i * 0.15 }); 
   });
   
   document.querySelectorAll('.skill-block').forEach((block) => {
     const cards = block.querySelectorAll('.skill-chip-card');
     if (!cards.length) return;
-    gsap.from(cards, { opacity: 0, y: 22, duration: 0.55, stagger: 0.06, ease: 'power2.out', scrollTrigger: { trigger: block, start: 'top 90%', toggleActions: 'play none none reverse' } });
-    cards.forEach((card, i) => {
-      const bars = card.querySelectorAll('.skill-chip-level span');
-      if (!bars.length) return;
-      gsap.to(bars, { scaleX: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out', delay: 0.25 + i * 0.06, scrollTrigger: { trigger: block, start: 'top 90%', toggleActions: 'play none none reverse' } });
-    });
+    gsap.from(cards, { clearProps: 'transform', opacity: 0, y: 22, duration: 0.55, stagger: 0.06, ease: 'power2.out', scrollTrigger: { trigger: block, start: 'top 90%', toggleActions: 'play none none reverse' } });
   });
   
   document.querySelectorAll('.internship-side').forEach((side, i) => { 
-    gsap.from(side, { opacity: 0, x: -50, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: side, start: 'top 85%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+    gsap.from(side, { clearProps: 'transform', opacity: 0, x: -50, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: side, start: 'top 85%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
   });
   
-  const featuredProject = document.querySelector('.featured-project');
-  if (featuredProject) {
-    gsap.from('.featured-project-side', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: featuredProject, start: 'top 88%', toggleActions: 'play none none reverse' } });
-    gsap.from('.featured-project-body', { opacity: 0, x: -40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: featuredProject, start: 'top 88%', toggleActions: 'play none none reverse' } });
-  }
+  document.querySelectorAll('.featured-project').forEach(fp => {
+    gsap.from(fp.querySelector('.featured-project-side'), { clearProps: 'transform', opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: fp, start: 'top 88%', toggleActions: 'play none none reverse' } });
+    gsap.from(fp.querySelector('.featured-project-body'), { clearProps: 'transform', opacity: 0, x: -40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: fp, start: 'top 88%', toggleActions: 'play none none reverse' } });
+  });
 
   document.querySelectorAll('.expert-card').forEach((card, i) => { 
-    gsap.from(card, { opacity: 0, y: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
+    gsap.from(card, { clearProps: 'transform', opacity: 0, y: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 90%', toggleActions: 'play none none reverse' }, delay: i * 0.1 }); 
   });
   
-  gsap.from('.resume-preview-tile', { opacity: 0, x: -50, rotation: -5, duration: 0.8, ease: 'back.out(1.4)', scrollTrigger: { trigger: '.resume-preview-tile', start: 'top 88%', toggleActions: 'play none none reverse' } });
-  gsap.from('.resume-text', { opacity: 0, x: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: '.resume-text', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  gsap.from('.resume-preview-tile', { clearProps: 'transform', opacity: 0, x: -50, rotation: -5, duration: 0.8, ease: 'back.out(1.4)', scrollTrigger: { trigger: '.resume-preview-tile', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  gsap.from('.resume-text', { clearProps: 'transform', opacity: 0, x: 40, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: '.resume-text', start: 'top 88%', toggleActions: 'play none none reverse' } });
   
   document.querySelectorAll('.contact-tile').forEach((tile, i) => { 
-    gsap.from(tile, { opacity: 0, x: -40, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.06 }); 
+    gsap.from(tile, { clearProps: 'transform', opacity: 0, x: -40, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: tile, start: 'top 92%', toggleActions: 'play none none reverse' }, delay: i * 0.06 }); 
   });
   
-  gsap.from('.contact-form', { opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact-form', start: 'top 88%', toggleActions: 'play none none reverse' } });
+  gsap.from('.contact-form', { clearProps: 'transform', opacity: 0, x: 40, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.contact-form', start: 'top 88%', toggleActions: 'play none none reverse' } });
 
   // (Active nav highlighting is handled by setupActiveNavTracking() in the core section above,
   // so the white indicator moves instantly on click and doesn't wait on GSAP/ScrollTrigger.)
@@ -1181,7 +1318,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('year').textContent = new Date().getFullYear();
   ScrollTrigger.refresh();
-  window.addEventListener('resize', () => ScrollTrigger.refresh());
 
   function setupNavClicks() {
     document.querySelectorAll('#navLinks a[data-nav]').forEach(link => {
